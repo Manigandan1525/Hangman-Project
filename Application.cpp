@@ -2,21 +2,26 @@
 #include "Graphical_design.h"
 #include "UserDesign.h"
 #include "XmlParser.h"
+#include "client.h"
 #include <iostream> 
 
 
 //using namespace UserInterface;
 using namespace std;
 //[STAThreadAttribute]
-void parser(char*,UserDesign);
+//void parser(char*,UserDesign);
 int main()
 {
-	UserDesign design;
-	XmlParser xml;
-	xml.parse_gamedetails();
-	design.getusername();
 
-	design.game();
+	
+	UserInterface* design = new UserDesign();
+	//design->game();
+	UserDesignInterface userdesign(design);
+	//xml.parse_gamedetails();
+	//design->getusername();
+
+	design->game();
+	//ch.receive();
 	/*system("cls");
 	char buffer[2000] = "<hangman><gamedetails value = \"1\"><game id=\"1245\"><playername>name1</playername><playername>name2</playername></game><game id=\"1237\"><playername>name3</palyername></game></gamedetails><categorylist><category>movies</category><category>plants</category><category>animals</category></categorylist><difficultylevel><level>easy</level><level>medium</level><level>hard</level></difficultylevel></hangman>";
 	// char buffer[2000] = "<hangman><gameinfo><gameid>1234</gameid><word>* * * q * * *</word><remainingguess>5</remainingguess><wrongguess>a</wrongguess><result>playing</result></gameinfo></hangman>";
@@ -36,7 +41,7 @@ int main()
 	return EXIT_SUCCESS;
 }
 
-void parser(char* buffer,UserDesign design)
+/*void parser(char* buffer,UserDesign design)
 {
 	string name;
 	//cout << buffer << endl;
@@ -65,7 +70,7 @@ void parser(char* buffer,UserDesign design)
 		design.chance();
 	}
 }
-
+*/
 
 /*MyForm fm;
 	int a;

@@ -29,6 +29,5 @@ public:
 	~Graphical_design();
 };
 
-extern Graphical_design gf;
 
 #endif

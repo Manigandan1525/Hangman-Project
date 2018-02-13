@@ -5,84 +5,82 @@ GameData::GameData()
 {
 }
 
-void GameData::set_gameplaying(int playing)
+void GameData::set_usergameid(string Id)
 {
-	this->GamePlaying = playing;
+	this->GameId = Id;
 }
 
-int GameData::get_gameplaying()
+string GameData::get_usergameid()
 {
-	return this->GamePlaying;
+	return this->GameId;
 }
-void GameData::set_totalgameid(string id)
+void GameData::set_words(string Word)
 {
-	this->TotalGameId = id;
-}
-
-string GameData::get_totalgameid()
-{
-	return this->TotalGameId;
+	this->GameWord = Word;
 }
 
-void GameData::get_playername(vector<string> name)
+string GameData::get_words()
 {
-	this->PlayerName = name;
+	return this->GameWord;
 }
 
-vector<string> GameData::get_playername()
+void GameData::set_remainingguess(string RemainingGuess)
 {
-	return this->PlayerName;
+	this->RemainingGuess = RemainingGuess;
 }
 
-void GameData::set_category(string category)
+string GameData::get_remainingguess()
 {
-	this->Category = category;
+	return this->RemainingGuess;
 }
 
-string GameData::get_category()
+void GameData::set_wrongguess(string WrongGuess)
 {
-	return this->Category;
+	this->WrongGuess = WrongGuess;
 }
 
-void GameData::set_categorylist(vector<string> categorylist)
+string GameData::get_wrongguess()
 {
-	this->CategoryList=categorylist;
+	return this->WrongGuess;
 }
 
-vector<string> GameData::get_categorylist()
+void GameData::set_result(string Result)
+{
+	this->Result = Result;
+}
+
+string GameData::get_result()
+{
+	return this->Result;
+}
+
+void GameData::set_chance(string Chance)
+{
+	this->Chance = Chance;
+}
+
+string GameData::get_chance()
+{
+	return this->Chance;
+}
+
+void GameData::set_gameoption(vector<string> Category)
+{
+	this->CategoryList = Category;
+}
+
+vector<string> GameData::get_gameoption()
 {
 	return this->CategoryList;
 }
 
-void GameData::set_difficulty(string difficulty)
+
+void GameData::set_gameid(vector<string> Id)
 {
-	this->Difficulty = difficulty;
+	this->TotalGameId = Id;
 }
 
-string GameData::get_difficulty()
+vector<string> GameData::get_gameid()
 {
-	return this->Difficulty;
+	return this->TotalGameId;
 }
-
-void GameData::set_level(vector<string> level)
-{
-	this->Level = level;
-}
-
-vector<string> GameData::get_level()
-{
-	return this->Level;
-}
-
-void GameData::set_gameinfo(vector<string> gameinfo)
-{
-	this->Gameinfo = gameinfo;
-}
-
-vector<string> GameData::get_gameinfo()
-{
-	return this->Gameinfo;
-}
-
-
-

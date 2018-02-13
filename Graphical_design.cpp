@@ -3,12 +3,7 @@
 using namespace std;
 
 // an instance of our class - to access member functions
-Graphical_design gf;
-
 // to save where our cursor on the screen
-int countLine = 7;
-
-
 
 Graphical_design::~Graphical_design()
 {

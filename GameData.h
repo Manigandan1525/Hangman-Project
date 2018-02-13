@@ -1,38 +1,36 @@
 #pragma once
-#include"XmlParser.h"
+#include<iostream>
 #include<vector>
+using namespace std;
 class GameData
 {
 private:
-	int GamePlaying;
-	string TotalGameId;
-	vector<string> PlayerName;
-	string Category;
+	vector<string> TotalGameId;
+	string GameId;
+	string GameWord;
+	string RemainingGuess;
+	string WrongGuess;
+	string Result;
+	string Chance;
 	vector<string> CategoryList;
-	string Difficulty;
 	vector<string> Level;
-	//vector<XmlParser> GameDetails;
-	vector<string> Gameinfo;
-
-
 public:
-	void set_gameplaying(int);
-	int get_gameplaying(); 
-	void set_totalgameid(string);
-	string get_totalgameid();
-	void get_playername(vector<string>);
-	vector<string> get_playername();
-	void set_category(string);
-	string get_category();
-	void set_categorylist(vector<string>);
-	vector<string> get_categorylist();
-	void set_difficulty(string);
-	string get_difficulty();
-	void set_level(vector<string>);
-	vector<string> get_level();
-	void set_gameinfo(vector<string>);
-	vector<string> get_gameinfo();
-	
+	void set_usergameid(string);
+	string get_usergameid();
+	void set_words(string);
+	string get_words();
+	void set_remainingguess(string);
+	string get_remainingguess();
+	void set_wrongguess(string);
+	string get_wrongguess();
+	void set_result(string);
+	string get_result();
+	void set_chance(string);
+	string get_chance();
+	void set_gameoption(vector<string>);
+	vector<string> get_gameoption();
+	void set_gameid(vector<string> id);
+	vector<string> get_gameid();
 	GameData();
 };
 

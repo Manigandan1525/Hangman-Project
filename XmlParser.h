@@ -1,27 +1,28 @@
 #pragma once
-#include "UserDesign.h"
-#include"client.h"
 #include "resource.h"
-#include<vector>
-//#include "GameData.h"
+#include "rapidxml.hpp"
+#include "rapidxml_print.hpp"
+#include"rapidxml_iterators.hpp"
+#include"rapidxml_utils.hpp"
+#include "GameData.h"
+using namespace rapidxml;
 class XmlParser
 {
+private:
+	GameData detail;
+	vector<GameData> data;
+	vector<string> gamedetails;
 
 public:
-	
-	vector<string> parse_joingame(xml_document<>* document);
-	vector<string> parse_gamecategory(xml_document<>* document);
-	vector<string> parse_gamedifficulty(xml_document<>* document);
-	void parser(char*);
-	void send_requestcreategame();
-	void send_requestjoingame();
-	void usergameid(string);
-	void useroption(string, string);
+	vector<GameData> parse_joingame(xml_document<>* document);
+	vector<GameData> parse_creategame(xml_document<>* document);
+
+	vector<GameData> parser(char*);
+	string receive_data(char*);
+
 	void player_response(string);
-	void parse_gameinfo();
+	vector<GameData> parse_gameinfo(xml_document<>* document);
 	void user_input(string);
 	XmlParser();
 };
-
-extern XmlParser parse;
 

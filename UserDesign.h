@@ -1,38 +1,41 @@
 #pragma once
 #define NOMINMAX
-#include "rapidxml.hpp"
-#include "rapidxml_print.hpp"
+#include"UserInterface.h"
 #include "Graphical_design.h"
-#include"XmlParser.h"
+#include"GameData.h"
+#include"UserRequest.h"
 #include<iostream>
+#include<vector>
 #include<string>
 #include <limits>
 using namespace std;
-using namespace rapidxml;
-class UserDesign
+
+class UserDesign : public UserInterface
 {
+private:
+	GameData detail;
+	UserRequest userrequest;
+	Graphical_design gf;
 
 public:
+
 	string name;
-	UserDesign();
-	~UserDesign();
+	string userdetails;
 	void getusername();
 	void game();
-	void set_username(string);
-	string get_username();
-	//vector<string> gameid;
-	
-	void playgame();
 	void game_result(string);
 	void hangman();
 	void GameOption();
-	string join_game(vector<string>);
-	void creategame();
+	
 	void Decision();
-	void gameinfo();
+
 	void chance();
-	void display_category(vector<string>);
-	void display_difficulty(vector<string>);
 	void design(int);
+	UserDesign();
+	~UserDesign();
+protected:
+	void join_game(vector<GameData>);
+	void creategame(vector<GameData>);
+	void game_info(vector<GameData>);
+
 };
-extern UserDesign design;

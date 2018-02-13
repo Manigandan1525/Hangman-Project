@@ -1,39 +1,39 @@
-#define HANGMAN "hangman"
+#define HANGMAN "Hangman"
 
-#define CREATE "create"
+#define CREATE "Create"
 
-#define JOIN "join"
+#define JOIN "Join"
 
-#define CATEGORYLIST "categorylist"
+#define CATEGORYLIST "CategoryList"
 
-#define CATEGORY "category"
+#define CATEGORY "Category"
 
-#define DIFFICULTYLEVEL "difficultylevel"
+#define DIFFICULTYLEVEL "DifficultyLevel"
 
-#define LEVEL "level"
+#define LEVEL "Level"
 
-#define GAMEID "gameid"
+#define GAMEID "GameId"
 
-#define CREATEGAME "creategame"
+#define CREATEGAME "CreateGame"
 
-#define USERNAME "username"
+#define USERNAME "UserName"
 
-#define JOINGAME "joingame"
+#define JOINGAME "JoinGame"
 
-#define REQUEST "request"
- 
-#define RESPONSE "response"
+#define REQUEST "Request"
 
-#define GAMEINFO "gameinfo"
+#define RESPONSE "Response"
 
-#define WORD "word"
+#define GAMEINFO "GameInfo"
 
-#define REMAININGGUESS "remainingguess"
+#define WORDS "Words"
 
-#define WRONGGUESS "wrongguess"
+#define REMAININGGUESS "RemainingGuess"
 
-#define RESULT "result"
+#define WRONGGUESS "WrongGuess"
 
-#define LETTER "letter"
+#define RESULT "Result"
 
-#define CHANCE "chance"
+#define LETTER "Letter"
+
+#define CHANCE "Chance"

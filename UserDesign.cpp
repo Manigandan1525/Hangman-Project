@@ -1,6 +1,5 @@
 #include "UserDesign.h"
 
-UserDesign design;
 UserDesign::UserDesign()
 {
 }
@@ -42,6 +41,10 @@ void UserDesign::game()
 		GameOption();
 		break;
 	case 2:
+		/*"The hangman game instructions", L"a.The player can either create new game or join with existing game.",
+                                  L"b.The player who wish join can give request to particular game id.", L"c.The existing player can accept or decline request given by new player.",
+                                  L"d.Total chances given to the players are 6.",L"e.The player can enter only one letter at a time."
+*/
 		int value;
 		cout << "			HANGMAN GAME" << "\n" << endl;
 		cout << "  INSTRUCTION " << "\n" << endl;
@@ -79,8 +82,17 @@ void UserDesign::game()
 
 }
 
+
+
+
+
+
+
+
+
 void UserDesign::GameOption()
 {
+	vector<string> gamedetails;
 	int i = 0;
 	int UserOption;
 	string value;
@@ -93,55 +105,76 @@ void UserDesign::GameOption()
 	cout << " 2. JOIN" << "\n\n" << endl;
 	cout << " 3. Back" << endl;
 	cin >> UserOption;
+	system("cls");
 	if (UserOption == 1)
 	{
-
-		parse.send_requestcreategame();
+		userrequest.send_requestcreategame(name);
 	}
 	else if (UserOption == 2)
 	{
-		parse.send_requestjoingame();
+		userrequest.send_requestjoingame(name);
 	}
 	else if (UserOption == 3)
 	{
 		game();
 	}
-
-	
 }
 
-string UserDesign::join_game(vector<string> gameid)
+void UserDesign::join_game(vector<GameData> gameid)
 {
+	vector<string> gamedetails;
 	hangman();
 	int useroption,index;
 	string id;
 	cout << "			HANGMAN GAME" << "\n\n" << endl;
 	cout << "     JOIN " << "\n" << endl;
 	cout << " GAME ID" << "\n\n" << endl;
-	for (index = 0; index < gameid.size(); index++)
+	gamedetails = gameid[0].get_gameid();
+	for (index = 0; index < gamedetails.size(); index++)
 	{
-		cout << "\t " <<index+1<<". "<< gameid[0] << endl;
+		cout << "\t " << index + 1 << ". " << gamedetails[index] << endl;
 	}
 	cin >> useroption;
-	id = gameid[index - 1];
-	return id;
+	system("cls");
+	id = gamedetails[useroption - 1];
+	userrequest.usergameid(id);
+	//gamedetails = parse.usergameid(id);
+	//gameinfo(gamedetails);
 	
 }
 
-void UserDesign::display_category(vector<string> category)
+void UserDesign::creategame(vector<GameData> detail)
 	{
-
+		int index,useroption;
+		vector<string> usercategory,difficulty;
+		string category,level;
 		hangman();
 		cout << "			HANGMAN GAME" << "\n\n" << endl;
 		cout << "     SELECT YOUR CATEGORY " << "\n" << endl;
-		cout << "gameid";
-	
+		for (index = 0; index < detail.size(); index++)
+		{
+			usercategory = detail[0].get_gameoption();
+			for (index = 0; index < usercategory.size(); index++)
+			{
+				cout << "\t " << index + 1 << ". " << usercategory[index] << endl;
+			}
+			
+		}
+		cin >> useroption;
+		category = usercategory[index - 1];
 
+
+	hangman();
+	cout << "			HANGMAN GAME" << "\n\n" << endl;
+	cout << "     SELECT YOUR CATEGORY " << "\n" << endl;
+	difficulty = detail[1].get_gameoption();
+	for (index = 0; index < difficulty.size(); index++)
+	{
+		cout << "\t " << index + 1 << ". " << difficulty[index] << endl;
 	}
-
-void UserDesign::display_difficulty(vector<string> difficulty)
-{
-
+	cin >> useroption;
+	level = difficulty[index - 1];
+	userrequest.useroption(category, level);
 }
 void UserDesign::Decision()
 {
@@ -152,69 +185,54 @@ void UserDesign::Decision()
 	cin >> decision;
 	if (decision == 1)
 	{
-		parse.player_response("Accept");
+		//parse.player_response("Accept");
 	//	gameinfo(document);
 	
 	}
 	else if (decision == 2)
 	{
-		parse.player_response("Decline");
+		//parse.player_response("Decline");
 	//	gameinfo(document);
 	}
 }
 
-void UserDesign::gameinfo()
+void UserDesign::game_info(vector<GameData> gameinfo)
 {
-	int i = 0;	
 	int remaining_chance;
-	string value;
-	string chance;
-
+	int turn;
+	string info = gameinfo[0].get_remainingguess();
+	turn = atoi(info.c_str());
+	design(turn);
 	cout << "			HANGMAN GAME" << "\n" << endl;
-	while (element != NULL)
-	{
-		if (i == 0)
-		{
-			cout << "Game ID : ";
-		}
-		else if (i == 1)
-		{
-			cout << "\n";
-			cout << "Word" << "\t\t\t";
-		}
-		else if (i == 2)
-		{
-			cout << "Remaining Guess" << "\t\t";
 
-		}
-		else if (i == 3)
-		{
-			cout << "Wrong Guess" << "\t\t";
-		}
+			cout << "Game ID : " << gameinfo[0].get_usergameid() << endl;
 	
-		
-		if (i == 4)
-		{
+			cout << "\n\n";
+			cout << "Word" << "\t\t\t" << gameinfo[0].get_words() << endl;
 
-			if (value == "playing")
+			cout << "\n";
+			cout << "Remaining Guess" << "\t\t" << gameinfo[0].get_remainingguess() << endl;
+
+			cout << "\n";
+			cout << "Wrong Guess" << "\t\t" << gameinfo[0].get_wrongguess() << endl;
+		
+			if (gameinfo[0].get_result() == "win")
 			{
-				
-			}
-			else if (value == "win")
-			{
+				Sleep(2000);
 				system("cls");
 				game_result("YOU WIN");
 			}
-			else if (value == "lose")
+			else if (gameinfo[0].get_result() == "lose")
 			{
+				Sleep(3000);
 				system("cls");
-				design(0);
 				game_result("YOU LOSE");
 			}
-		}
 
-		i++;
-	}
+			if (gameinfo[0].get_chance() == "1")
+			{
+				chance();
+			}
 }
 
 void UserDesign::chance()
@@ -228,7 +246,7 @@ void UserDesign::chance()
 		cin >> letter;
 		if (letter.length() == 1)
 		{
-			parse.user_input(letter);
+			userrequest.user_input(letter);
 			break;
 		}
 		else
@@ -245,10 +263,10 @@ void UserDesign::game_result(string result)
 	int option;
 	cout << "			HANGMAN GAME" << "\n" << endl;
 	cout << "\n" << endl;
-	cout << "	\t\t" <<result<< "\n" << endl;
+	cout << "	\t\t   " <<result<< "\n" << endl;
 	cout << "\n" << endl;
 	cout << " 1. New game" << endl;
-	cout << " 2.Exit" << endl;
+	cout << " 2. Exit" << endl;
 	cin >> option;
 	if (option == 1)
 	{
@@ -260,6 +278,15 @@ void UserDesign::game_result(string result)
 		exit(0);
 	}
 }
+
+
+
+
+
+
+
+
+
 
 void UserDesign::hangman()
 {
