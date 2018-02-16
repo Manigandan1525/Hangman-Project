@@ -43,3 +43,5 @@
 #define  LOSE "LOSE"
 
 #define  WIN "WIN"
+
+#define PLAYING "PLAYING"

@@ -73,10 +73,10 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libws2_32.a;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;libws2_32.a;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>NotSet</SubSystem>
       <EntryPointSymbol>main</EntryPointSymbol>
-      <AdditionalLibraryDirectories>C:\Users\jayaraj-1\Desktop\User Interface\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Jayakuma-2\Documents;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Module Test|Win32'">
@@ -101,7 +101,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libws2_32.a;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\jayaraj-1\Desktop\User Interface\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Jayakuma-2\Documents\User Interface\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
@@ -115,6 +115,8 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="UserDesign.h" />
+    <ClInclude Include="UserDesignInterface.h" />
+    <ClInclude Include="UserInterface.h" />
     <ClInclude Include="UserRequest.h" />
     <ClInclude Include="XmlParser.h" />
   </ItemGroup>
@@ -125,6 +127,7 @@
     <ClCompile Include="client.cpp" />
     <ClCompile Include="FormDesign.cpp" />
     <ClCompile Include="UserDesign.cpp" />
+    <ClCompile Include="UserDesignInterface.cpp" />
     <ClCompile Include="UserRequest.cpp" />
     <ClCompile Include="XmlParser.cpp" />
   </ItemGroup>
@@ -143,6 +146,11 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="User Interface.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\stage1 .PNG" />
+    <Image Include="Images\stage2.png" />
+    <Image Include="Images\stage3.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

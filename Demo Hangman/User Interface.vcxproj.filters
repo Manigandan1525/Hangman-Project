@@ -30,7 +30,13 @@
     <ClInclude Include="resource.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="UserInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="UserRequest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UserDesignInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="client.h">
@@ -62,6 +68,9 @@
     <ClCompile Include="UserRequest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UserDesignInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -78,5 +87,16 @@
     <EmbeddedResource Include="FormDesign.resx">
       <Filter>Resource Files</Filter>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\stage1 .PNG">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\stage2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\stage3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

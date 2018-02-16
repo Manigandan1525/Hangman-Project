@@ -1,6 +1,6 @@
 #pragma once
-#define NOMINMAX			
-#include "XmlParser.h"			
+#define NOMINMAX
+#include "XmlParser.h"
 #include "client.h"
 #include "FormDesign.h"
 #include <iostream> 
@@ -10,7 +10,6 @@ using namespace std;
 [STAThreadAttribute]
 int main()
 {
-	system("cls");
 	FormDesign form;
 	UserDesign design;
 	client client;
@@ -30,7 +29,6 @@ int main()
 		{
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
 			cout << "Enter correct option: " << '\t';
 			cin >> choice;
 		}
@@ -45,56 +43,47 @@ int main()
 		}
 	}
 	system("cls");
-	if (choice == 1){						//choose windows application
+	if (choice == 1)				//choose windows application
+	{
 		HWND hWnd = GetConsoleWindow();
 		if (hWnd != 0) {
 			ShowWindow(hWnd, SW_HIDE);
 		}
+		
 		form.InitializeComponent();
-		while(1)
-		{
-			Information = client.receive_details();
-		strcpy_s(option, Information.c_str());
-		strcpy(new_data, Information.c_str());
-		value = parse.receive_data(option);
-		details = parse.parser(new_data);
-		if (value == JOIN)
-		{
-			form.join_game(details);
-		}
-		else if (value == CATEGORYLIST)
-		{
-			form.creategame(details);
-		}
-		else if (value == GAMEINFO)
-		{
-			form.game_info(details);
-		}
-		}
 		form.ShowDialog();
 	}
-	else                                    //choose console applicati0n 
+	else					  //choose console application
 	{
 		design.get_username();
 		design.game();
 		while (1)
 		{
 			Information = client.receive_details();
-			strcpy_s(option, Information.c_str());
-			strcpy(new_data, Information.c_str());
-			value = parse.receive_data(option);
-			details = parse.parser(new_data);
-			if (value == JOIN)
+			if (!Information.empty())
 			{
-				design.join_game(details);
+				strcpy_s(option, Information.c_str());
+				strcpy(new_data, Information.c_str());
+				value = parse.receive_data(option);
+				details = parse.parser(new_data);
+				if (value == JOIN)
+				{
+
+					design.join_game(details);
+				}
+				else if (value == CATEGORYLIST)
+				{
+					design.creategame(details);
+				}
+				else if (value == GAMEINFO)
+				{
+					design.game_info(details);
+				}
 			}
-			else if (value == CATEGORYLIST)
+			else
 			{
-				design.creategame(details);
-			}
-			else if (value == GAMEINFO)
-			{
-				design.game_info(details);
+				Sleep(3000);
+				exit(0);
 			}
 		}
 	}
@@ -102,3 +91,4 @@ int main()
 	cin.ignore(1000, '\n');
 	return EXIT_SUCCESS;
 }
+

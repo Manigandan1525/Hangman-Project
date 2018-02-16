@@ -14,7 +14,22 @@ void UserDesign::get_username()
 	cout << "			HANGMAN GAME" << "\n" << endl;
 	cout << "\n Press 1 to exit game\n" << endl;
 	cout << "\n Enter your name : ";
-	cin >> Name;										// get user name to user
+	cin.get();
+	getline(cin, Name);						// get user name to user
+	cout << Name.length() << endl;
+	while (1)
+	{
+		if (Name.length() > 50)
+		{
+			cout << "Only 50 character allowed, please try again " << endl;
+			cout << "Enter your name:";
+			cin.get();
+			getline(cin, Name);
+		}
+		else{
+			break;
+		}
+	}
 	if (Name == "1")
 	{
 		exit(0);
@@ -27,9 +42,9 @@ void UserDesign::game()
 	hangman();
 	int Option;
 	cout << "			HANGMAN GAME" << "\n" << endl;
-	cout << " 1. Play"<<endl;
-	cout << " 2. Instruction"<<endl;
-	cout << " 3. Exit"<<endl;
+	cout << " 1. Play" << endl;
+	cout << " 2. Instruction" << endl;
+	cout << " 3. Exit" << endl;
 	cin >> Option;										//get option from user
 	while (1)
 	{
@@ -65,7 +80,7 @@ void UserDesign::game()
 		cout << "  INSTRUCTION " << "\n" << endl;
 		cout << " a. The player can either create new game or join with existing game." << endl;
 		cout << " b. Total chances given to the players are 6." << endl;
-		cout << " c. The player can enter only one letter at a time." << endl; 
+		cout << " c. The player can enter only one letter at a time." << endl;
 		cout << " d. for every wrong guesses the hangman image will be loaded " << endl;
 		cout << " e. If chances are over the player will lose the game" << endl;
 		cout << " f. For correct guesses the chances will not be reduced." << "\n\n\n" << endl;
@@ -82,7 +97,7 @@ void UserDesign::game()
 				cin >> Value;
 
 			}
-			else if (Value !=1)
+			else if (Value != 1)
 			{
 				cout << "Enter correct option: " << '\t';
 				cin >> Option;
@@ -102,7 +117,7 @@ void UserDesign::game()
 }
 
 
-void UserDesign::game_option()							
+void UserDesign::game_option()
 {
 	int UserOption;
 	hangman();
@@ -152,7 +167,8 @@ void UserDesign::join_game(vector<GameData> GameId)			//display join game detail
 {
 	vector<string> GameDetails;
 	hangman();
-	int UserOption,Index,size;
+	int UserOption, size;
+	size_t Index;
 	string id;
 	GameDetails = GameId[0].get_gameid();
 	if (stoi(GameDetails[0]) == 0)
@@ -167,7 +183,7 @@ void UserDesign::join_game(vector<GameData> GameId)			//display join game detail
 		cout << "     JOIN " << "\n" << endl;
 		cout << " GAME ID" << "\n\n" << endl;
 		size = GameDetails.size();
-		for (Index = 0; Index <size ; Index++)
+		for (Index = 0; Index <size; Index++)
 		{
 			cout << "\t " << Index + 1 << ". " << GameDetails[Index] << endl;
 		}
@@ -199,47 +215,48 @@ void UserDesign::join_game(vector<GameData> GameId)			//display join game detail
 	}
 }
 
-void UserDesign::creategame(vector<GameData> Detail)			
+void UserDesign::creategame(vector<GameData> Detail)
+{
+	int UserOption;
+	size_t Index;
+	vector<string> UserCategory, Difficulty;
+	string Category, Level;
+	hangman();
+	cout << "			HANGMAN GAME" << "\n\n" << endl;			//display category
+	cout << "     SELECT YOUR CATEGORY " << "\n" << endl;
+	for (Index = 0; Index < Detail.size(); Index++)
 	{
-		int Index,UserOption;
-		vector<string> UserCategory,Difficulty;
-		string Category,Level;
-		hangman();
-		cout << "			HANGMAN GAME" << "\n\n" << endl;			//display category
-		cout << "     SELECT YOUR CATEGORY " << "\n" << endl;
-		for (Index = 0; Index < Detail.size(); Index++)
+		UserCategory = Detail[0].get_gameoption();
+		for (Index = 0; Index < UserCategory.size(); Index++)
 		{
-			UserCategory = Detail[0].get_gameoption();
-			for (Index = 0; Index < UserCategory.size(); Index++)
-			{
-				cout << "\t " << Index + 1 << ". " << UserCategory[Index] << endl;
-			}
-			
+			cout << "\t " << Index + 1 << ". " << UserCategory[Index] << endl;
 		}
-		cin >> UserOption;
-		while (1)
+
+	}
+	cin >> UserOption;
+	while (1)
+	{
+		if (cin.fail())
 		{
-			if (cin.fail())
-			{
-				cin.clear();
-				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-				cout << "Enter correct option: " << '\t';
-				cin >> UserOption;
+			cout << "Enter correct option: " << '\t';
+			cin >> UserOption;
 
-			}
-			else if (UserOption<1 || UserOption>Index)
-			{
-				cout << "Enter correct option: " << '\t';
-				cin >> UserOption;
-			}
-			else
-			{
-				break;
-			}
 		}
-		system("cls");
-		Category = UserCategory[UserOption - 1];
+		else if (UserOption<1 || UserOption>Index)
+		{
+			cout << "Enter correct option: " << '\t';
+			cin >> UserOption;
+		}
+		else
+		{
+			break;
+		}
+	}
+	system("cls");
+	Category = UserCategory[UserOption - 1];
 	hangman();
 	cout << "			HANGMAN GAME" << "\n\n" << endl;				//display difficulty
 	cout << "     SELECT YOUR DIFFICULTY " << "\n" << endl;
@@ -279,6 +296,7 @@ void UserDesign::game_info(vector<GameData> GameInfo)				//display game details
 {
 	int Turn;
 	string temp;
+	size_t Index;
 	string info = GameInfo[0].get_remainingguess();
 	Turn = atoi(info.c_str());
 	system("cls");
@@ -292,9 +310,9 @@ void UserDesign::game_info(vector<GameData> GameInfo)				//display game details
 	cout << "Game ID : " << GameInfo[0].get_usergameid() << endl;
 	cout << "\n\n";
 	cout << "Word" << "\t";
-	for (int i = 0; i < temp.size(); i++)
+	for (Index = 0; Index < temp.size(); Index++)
 	{
-		cout << temp[i] << " ";
+		cout << temp[Index] << " ";
 	}
 	cout << endl;
 	cout << "\n";
@@ -327,7 +345,7 @@ void UserDesign::chance()
 	string Letter;
 	cout << "Enter your guessing letter" << endl;
 
-	while(1)
+	while (1)
 	{
 		cin >> Letter;
 		if (Letter.length() == 1)
@@ -342,13 +360,13 @@ void UserDesign::chance()
 	}
 }
 
-void UserDesign::game_result(string name,string result)			//display game result 
+void UserDesign::game_result(string name, string result)			//display game result 
 {
 	int Option;
 	cout << "			HANGMAN GAME" << "\n" << endl;
 	cout << "\n" << endl;
-	cout << "	\t\t   " <<result<< "\n" << endl;
-	cout << " Correct Word :" << name << "\n\n"<<endl;
+	cout << "	\t\t   " << result << "\n" << endl;
+	cout << " Correct Word :" << name << "\n\n" << endl;
 	cout << " 1. New game" << endl;
 	cout << " 2. Exit" << endl;
 	cin >> Option;
@@ -432,7 +450,7 @@ void UserDesign::design(int chanceleft)				//display hangman
 	{
 		gf.box(57, 5, 64, 9);
 		gf.box(59, 6, 59, 6);
-   		gf.box(62, 6, 62, 6);
+		gf.box(62, 6, 62, 6);
 	}
 	else if (chanceleft == 4)
 	{

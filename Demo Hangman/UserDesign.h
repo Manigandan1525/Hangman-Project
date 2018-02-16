@@ -22,7 +22,7 @@ public:
 	string UserDetails;
 	void get_username();
 	void game();
-	void game_result(string,string);
+	void game_result(string, string);
 	void join_game(vector<GameData>);
 	void creategame(vector<GameData>);
 	void game_info(vector<GameData>);

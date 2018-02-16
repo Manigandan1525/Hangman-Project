@@ -2,6 +2,7 @@
 #include <msclr\marshal_cppstd.h>
 //#using <mscorlib.dll>
 #include"UserDesign.h"
+#include<string>
 #include<iostream>
 /*
 #using <System.DLL>
@@ -130,7 +131,6 @@ namespace Hangman {
 	public:
 		void InitializeComponent()
 		{
-			UserRequest::Instantiate();
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(FormDesign::typeid));
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
@@ -214,8 +214,8 @@ namespace Hangman {
 			// 
 			// pictureBox1
 			// 
-			this->pictureBox1->Image = Image::FromFile(String::Concat(System::Environment::GetFolderPath(System::Environment::SpecialFolder::Personal), "\\Visual Studio 2013\\Projects\\User Interface\\User Interface\\Images\\stage1.png"));
-			this->pictureBox1->Location = System::Drawing::Point(580, 170);
+			this->pictureBox1->Image = Image::FromFile(String::Concat(System::Environment::GetFolderPath(System::Environment::SpecialFolder::Personal), "\\User Interface\\User Interface\\Images\\stage.png"));
+			this->pictureBox1->Location = System::Drawing::Point(539, 138);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(264, 378);
 			this->pictureBox1->TabIndex = 6;
@@ -338,14 +338,18 @@ namespace Hangman {
 			this->Load += gcnew System::EventHandler(this, &FormDesign::FormDesign_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
+			if (this->comboBox1->Text != "")
+			{
+				display_difficult(Categories);
+			}
 
 
 		}
 	public:
-		void levels(vector<GameData> Difficult)
+		void levels()//vector<GameData> Difficult)
 		{
 
-			vector<string> Choice;
+		/*	vector<string> Choice;
 			System::String^ unmanaged = "test";
 			string managed = msclr::interop::marshal_as<std::string>(unmanaged);
 			int Size = 0;
@@ -358,7 +362,7 @@ namespace Hangman {
 			String^ Medium = gcnew String(Choice[1].c_str());
 			String^ Hard = gcnew String(Choice[2].c_str());
 			//}
-
+*/
 
 
 			this->label5 = (gcnew System::Windows::Forms::Label());
@@ -391,7 +395,7 @@ namespace Hangman {
 			this->radioButton4->Size = System::Drawing::Size(87, 35);
 			this->radioButton4->TabIndex = 12;
 			this->radioButton4->TabStop = true;
-			this->radioButton4->Text = Words;
+			this->radioButton4->Text = "Easy";
 
 
 			// 
@@ -405,7 +409,7 @@ namespace Hangman {
 			this->radioButton5->Size = System::Drawing::Size(126, 35);
 			this->radioButton5->TabIndex = 13;
 			this->radioButton5->TabStop = true;
-			this->radioButton5->Text = Medium;
+			this->radioButton5->Text = "Medium";
 			// 
 			// radioButton6
 			// 
@@ -417,7 +421,7 @@ namespace Hangman {
 			this->radioButton6->Size = System::Drawing::Size(129, 35);
 			this->radioButton6->TabIndex = 14;
 			this->radioButton6->TabStop = true;
-			this->radioButton6->Text = Hard;
+			this->radioButton6->Text = "Hard";
 			// 
 			// Button9
 			// 
@@ -524,6 +528,7 @@ namespace Hangman {
 	public:
 		void game(vector<GameData> GameInfo)
 		{
+			vector<string>word;
 			string Id = GameInfo[0].get_usergameid();
 			string Word = GameInfo[0].get_words();
 			string Chance = GameInfo[0].get_remainingguess();
@@ -535,9 +540,10 @@ namespace Hangman {
 			System::String^ WrongGuess = gcnew String(Guess.c_str());
 
 			System::String^ Chances = gcnew String(Chance.c_str());
+			System::String^ Value = gcnew String(Result.c_str());
+			string UserGuess;
 			int LeftChances = atoi(Chance.c_str());
-
-			if (Result != "win" || Result != "lose")
+			if (Result ==PLAYING)
 			{
 				this->textBox6 = (gcnew System::Windows::Forms::TextBox());
 
@@ -595,7 +601,7 @@ namespace Hangman {
 				this->label1->Name = L"label6";
 				this->label1->Size = System::Drawing::Size(204, 36);
 				this->label1->TabIndex = 22;
-				this->label1->Text = L"Wrong Guesses";
+				this->label1->Text = L"Wrong Guess";
 				// 
 				this->label9->AutoSize = true;
 				this->label9->Font = (gcnew System::Drawing::Font(L"Times New Roman", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -617,7 +623,7 @@ namespace Hangman {
 				this->textBox2->Size = System::Drawing::Size(84, 58);
 				this->textBox2->TabIndex = 24;
 				this->textBox2->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
-				this->textBox4->Text = Chances;
+				this->textBox2->Text = Chances;
 
 
 				// 
@@ -630,7 +636,7 @@ namespace Hangman {
 				this->textBox3->Name = L"textBox3";
 				this->textBox3->ReadOnly = true;
 				this->textBox3->Text = Words;
-				this->textBox3->Size = System::Drawing::Size(313, 52);
+				this->textBox3->Size = System::Drawing::Size(500, 52);
 				this->textBox3->TabIndex = 25;
 
 				// 
@@ -644,6 +650,10 @@ namespace Hangman {
 				this->label8->TabIndex = 26;
 				this->label8->Text = L"Type here";
 
+				string Information;
+				char option[1024];
+				vector<GameData> details;
+				string value;
 				// 
 				// textBox4
 				// 
@@ -656,12 +666,12 @@ namespace Hangman {
 					this->textBox4->Multiline = true;
 					this->textBox4->Name = L"textBox4";
 					this->textBox4->MaxLength = number;
-					this->textBox4->ReadOnly = true;
 					this->textBox4->Size = System::Drawing::Size(232, 50);
 					this->textBox4->TabIndex = 27;
 					this->textBox4->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &FormDesign::textBox4_KeyPress);
+
 				}
-				else
+				else 
 				{
 					this->textBox4->Font = (gcnew System::Drawing::Font(L"Times New Roman", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 						static_cast<System::Byte>(0)));
@@ -672,7 +682,31 @@ namespace Hangman {
 					this->textBox4->Text = "Not your turn";
 					this->textBox4->Size = System::Drawing::Size(232, 50);
 					this->textBox4->TabIndex = 27;
+					string Information;
+					char option[1024];
+					vector<GameData> details;
+					string value;
 
+
+				
+					
+
+					Information = UserRequest::receive();
+					strcpy_s(option, Information.c_str());
+
+					details = UserRequest::request_parse(Information);
+					value = UserRequest::receive_data(Information);
+
+					if (value == GAMEINFO)
+					{
+						game_info(details);
+					}
+					
+
+			//		game_choice();
+					
+
+					cout << "a";
 				}
 
 
@@ -685,7 +719,7 @@ namespace Hangman {
 				this->textBox5->Location = System::Drawing::Point(300, 110);
 				this->textBox5->Name = L"textBox5";
 				this->textBox5->ReadOnly = true;
-				this->textBox5->Text = "";// GameId;
+				this->textBox5->Text = GameId;
 				this->textBox5->Size = System::Drawing::Size(120, 90);
 				this->textBox5->TabIndex = 39;
 
@@ -700,42 +734,43 @@ namespace Hangman {
 
 				this->textBox6->Size = System::Drawing::Size(175, 42);
 				this->textBox6->TabIndex = 8;
-				this->textBox4->Text = WrongGuess;
+				this->textBox6->Text = WrongGuess;
 				//
 				// pictureBox3
 				// 
 				if (LeftChances == 6)
 				{
+
 					image();
 
 				}
 
-				else if (LeftChances == 7)
+				else if (LeftChances == 5)
 				{
 
 					// pictureBox3
 					// 
-					this->pictureBox2->Image = Image::FromFile(String::Concat(System::Environment::GetFolderPath(System::Environment::SpecialFolder::Personal), "\\Visual Studio 2013\\Projects\\User Interface\\User Interface\\Images\\stage2.png"));
+					this->pictureBox2->Image = Image::FromFile(String::Concat(System::Environment::GetFolderPath(System::Environment::SpecialFolder::Personal), "\\User Interface\\User Interface\\Images\\stage2.png"));
 					this->pictureBox2->Location = System::Drawing::Point(650, 170);
 					this->pictureBox2->Name = L"pictureBox2";
 					this->pictureBox2->Size = System::Drawing::Size(270, 370);
 					this->pictureBox2->TabIndex = 10;
 					this->pictureBox2->TabStop = false;
-
-
+				
 				}
 				else if (LeftChances == 4)
 				{
 
 					// 
 					// pictureBox4
-					this->pictureBox4->Image = Image::FromFile(String::Concat(System::Environment::GetFolderPath(System::Environment::SpecialFolder::Personal),"\\Visual Studio 2013\\Projects\\User Interface\\User Interface\\Images\\stage3.png"));
+					this->pictureBox4->Image = Image::FromFile(String::Concat(System::Environment::GetFolderPath(System::Environment::SpecialFolder::Personal), "\\User Interface\\User Interface\\Images\\stage3.png"));
 
 					this->pictureBox4->Location = System::Drawing::Point(650, 170);
 					this->pictureBox4->Name = L"pictureBox4";
 					this->pictureBox4->Size = System::Drawing::Size(270, 370);
 					this->pictureBox4->TabIndex = 9;
 					this->pictureBox4->TabStop = false;
+				
 
 				}
 				else if (LeftChances == 3)
@@ -745,12 +780,13 @@ namespace Hangman {
 					// pictureBox2
 					// 
 
-					this->pictureBox3->Image = Image::FromFile(String::Concat(System::Environment::GetFolderPath(System::Environment::SpecialFolder::Personal), "\\Visual Studio 2013\\Projects\\User Interface\\User Interface\\Images\\stage4.png"));
+					this->pictureBox3->Image = Image::FromFile(String::Concat(System::Environment::GetFolderPath(System::Environment::SpecialFolder::Personal), "\\User Interface\\User Interface\\Images\\stage4.png"));
 					this->pictureBox3->Location = System::Drawing::Point(650, 170);
 					this->pictureBox3->Name = L"pictureBox3";
 					this->pictureBox3->Size = System::Drawing::Size(270, 370);
 					this->pictureBox3->TabIndex = 8;
 					this->pictureBox3->TabStop = false;
+
 				}
 				else if (LeftChances == 2)
 				{
@@ -758,12 +794,13 @@ namespace Hangman {
 					// 
 					// pictureBox5
 					// 
-					this->pictureBox5->Image = Image::FromFile(String::Concat(System::Environment::GetFolderPath(System::Environment::SpecialFolder::Personal), "\\Visual Studio 2013\\Projects\\User Interface\\User Interface\\Images\\stage5.png"));
+					this->pictureBox5->Image = Image::FromFile(String::Concat(System::Environment::GetFolderPath(System::Environment::SpecialFolder::Personal), "\\User Interface\\User Interface\\Images\\stage5.png"));
 					this->pictureBox5->Location = System::Drawing::Point(650, 170);
 					this->pictureBox5->Name = L"pictureBox5";
 					this->pictureBox5->Size = System::Drawing::Size(270, 370);
 					this->pictureBox5->TabIndex = 11;
 					this->pictureBox5->TabStop = false;
+					
 				}
 				else if (LeftChances == 1)
 				{
@@ -771,12 +808,13 @@ namespace Hangman {
 					// 
 					// pictureBox6
 					// 
-					this->pictureBox6->Image = Image::FromFile(String::Concat(System::Environment::GetFolderPath(System::Environment::SpecialFolder::Personal), "\\Visual Studio 2013\\Projects\\User Interface\\User Interface\\Images\\stage6.png"));
+					this->pictureBox6->Image = Image::FromFile(String::Concat(System::Environment::GetFolderPath(System::Environment::SpecialFolder::Personal), "\\User Interface\\User Interface\\Images\\stage6.png"));
 					this->pictureBox6->Location = System::Drawing::Point(650, 170);
 					this->pictureBox6->Name = L"pictureBox6";
 					this->pictureBox6->Size = System::Drawing::Size(270, 370);
 					this->pictureBox6->TabIndex = 12;
 					this->pictureBox6->TabStop = false;
+				
 				}
 				else  if (LeftChances == 0)
 				{
@@ -784,12 +822,14 @@ namespace Hangman {
 					// 
 					// pictureBox7
 					// 
-					this->pictureBox7->Image = Image::FromFile(String::Concat(System::Environment::GetFolderPath(System::Environment::SpecialFolder::Personal), "\\Visual Studio 2013\\Projects\\Hangman\\Hangman\\Images\\stage7.png"));
+					this->pictureBox7->Image = Image::FromFile(String::Concat(System::Environment::GetFolderPath(System::Environment::SpecialFolder::Personal), "\\User Interface\\User Interface\\Images\\stage7.png"));
 					this->pictureBox7->Location = System::Drawing::Point(650, 170);
 					this->pictureBox7->Name = L"pictureBox7";
 					this->pictureBox7->Size = System::Drawing::Size(270, 370);
 					this->pictureBox7->TabIndex = 13;
 					this->pictureBox7->TabStop = false;
+
+
 				}
 				this->AutoScaleDimensions = System::Drawing::SizeF(7, 13);
 				this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
@@ -831,12 +871,13 @@ namespace Hangman {
 				this->ResumeLayout(false);
 				this->PerformLayout();
 			}
-			else if (Result == "win" || Result == "lose")
-			{
-				Sleep(2000);
-				this->Controls->Clear();
-				result();
-			}
+		else if (Result == WIN || Result == LOSE)
+		{
+			//	Sleep(2000);
+			result(Value, Words);
+
+		}
+
 		}
 		void image()
 		{
@@ -846,7 +887,7 @@ namespace Hangman {
 
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
-			this->pictureBox1->Image = Image::FromFile(String::Concat(System::Environment::GetFolderPath(System::Environment::SpecialFolder::Personal), "\\Visual Studio 2013\\Projects\\User Interface\\User Interface\\Images\\stage1.png"));
+			this->pictureBox1->Image = Image::FromFile(String::Concat(System::Environment::GetFolderPath(System::Environment::SpecialFolder::Personal), "\\User Interface\\User Interface\\Images\\stage.png"));
 
 			this->pictureBox1->Location = System::Drawing::Point(580, 170);
 			this->pictureBox1->Name = L"pictureBox1";
@@ -876,6 +917,7 @@ namespace Hangman {
 	public:
 		void display()
 		{
+			UserRequest::server_connection();
 			this->radioButton7 = (gcnew System::Windows::Forms::RadioButton());
 			this->radioButton8 = (gcnew System::Windows::Forms::RadioButton());
 
@@ -1032,11 +1074,13 @@ namespace Hangman {
 			this->ResumeLayout(false);
 			this->PerformLayout();
 		}
-		void result()
+		void result(String^ Result,String^Words)
 		{
+			this->Controls->Clear();
+//			String^ Result = "win";
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->Button4 = (gcnew System::Windows::Forms::Button());
-			if (this->label1->Text == "win")
+			if (Result == WIN)
 			{
 				this->label1 = (gcnew System::Windows::Forms::Label());
 				this->label1->AutoSize = true;
@@ -1048,7 +1092,7 @@ namespace Hangman {
 				this->label1->TabIndex = 32;
 				this->label1->Text = L"You Win";
 			}
-			else// if (this->label1->Text == "loss")
+			else if(Result== LOSE)
 			{
 				this->label1 = (gcnew System::Windows::Forms::Label());
 				this->label1->AutoSize = true;
@@ -1109,70 +1153,96 @@ namespace Hangman {
 			int Size = 0;
 			int Iterate = 0;
 			vector<string> Word;
-			this->Button3 = (gcnew System::Windows::Forms::Button());
-			this->comboBox2 = (gcnew System::Windows::Forms::ComboBox());
-			this->label1->AutoSize = true;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Times New Roman", 14, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
-				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(200, 100);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(390, 110);
-			this->label1->TabIndex = 32;
-			this->label1->Text = L"Game id";
-			image();
-			this->comboBox2->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12.25F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
-				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->comboBox2->FormattingEnabled = true;
-
-			for (Iterate = 0; Iterate < GameId.size(); Iterate++)
-			{
+			
 				// GameId[iterate] = "item";
 				Word = GameId[0].get_gameid();
 				System::String^ Words = gcnew String(Word[Iterate].c_str());
-				this->comboBox2->Items->AddRange(gcnew cli::array< System::Object^  >(1) { Words });
-			}
-			/*	for (int i = 0; i <= 9; i++)
-			{
-			num[i] = "item";
-			System::String^ Words = gcnew String(num[i].c_str());
-			//	Words = String::Concat("item", i.ToString());
-			this->comboBox2->Items->AddRange(gcnew cli::array< System::Object^  >(1) { Words });
+				if (Words == "0")
+				{
+					String^ message = " No gameid to join";
+					String^ caption = "Join";
+					MessageBoxButtons buttons = MessageBoxButtons::OK;
+					System::Windows::Forms::DialogResult result;
 
-			}*/
-			this->comboBox2->Location = System::Drawing::Point(200, 200);
-			this->comboBox2->Name = L"comboBox2";
-			this->comboBox2->Size = System::Drawing::Size(170, 30);
-			this->comboBox2->TabIndex = 33;
+					// Displays the MessageBox.
+					result = MessageBox::Show(this, message, caption, buttons, MessageBoxIcon::Question, MessageBoxDefaultButton::Button1, MessageBoxOptions::RightAlign);
+					if (result == System::Windows::Forms::DialogResult::OK)
+					{
+						this->Controls->Clear();
+						choice();
 
-			// 
-			// Button3
-			//
-			this->Button3->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->Button3->BackColor = System::Drawing::SystemColors::ButtonShadow;
-			this->Button3->ForeColor = System::Drawing::Color::White;
-			this->Button3->Location = System::Drawing::Point(280, 450);
-			this->Button3->Name = L"Button3";
-			this->Button3->Size = System::Drawing::Size(105, 36);
-			this->Button3->TabIndex = 33;
-			this->Button3->Text = L"Ok";
-			this->Button3->UseVisualStyleBackColor = false;
-			this->Button3->Click += gcnew System::EventHandler(this, &FormDesign::Button3_Click);
-			this->Controls->Add(this->comboBox2);
-			this->Controls->Add(this->label1);
-			this->Controls->Add(this->Button3);
-			this->Font = (gcnew System::Drawing::Font(L"Times New Roman", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->ForeColor = System::Drawing::Color::Black;
-			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
-			this->MaximizeBox = false;
-			this->MinimizeBox = false;
-			this->Name = L"FormDesign";
-			this->Text = L"Hangman";
-			this->Load += gcnew System::EventHandler(this, &FormDesign::FormDesign_Load);
-			this->ResumeLayout(false);
-			this->PerformLayout();
+					}
+				}
+				else
+				{
 
+					this->Button3 = (gcnew System::Windows::Forms::Button());
+					this->comboBox2 = (gcnew System::Windows::Forms::ComboBox());
+					this->label1->AutoSize = true;
+					this->label1->Font = (gcnew System::Drawing::Font(L"Times New Roman", 14, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
+						System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+					this->label1->Location = System::Drawing::Point(200, 100);
+					this->label1->Name = L"label1";
+					this->label1->Size = System::Drawing::Size(390, 110);
+					this->label1->TabIndex = 32;
+					this->label1->Text = L"Game id";
+					image();
+
+					this->comboBox2->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12.25F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
+						System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+					this->comboBox2->FormattingEnabled = true;
+					Word = GameId[0].get_gameid();
+					for (Iterate = 0; Iterate < Word.size(); Iterate++)
+					{
+						System::String^ Words = gcnew String(Word[Iterate].c_str());
+
+						this->comboBox2->Items->AddRange(gcnew cli::array< System::Object^  >(1) { Words });
+					}
+				
+
+
+					/*	for (int i = 0; i <= 9; i++)
+					{
+					num[i] = "item";
+					System::String^ Words = gcnew String(num[i].c_str());
+					//	Words = String::Concat("item", i.ToString());
+					this->comboBox2->Items->AddRange(gcnew cli::array< System::Object^  >(1) { Words });
+
+					}*/
+					this->comboBox2->Location = System::Drawing::Point(200, 200);
+					this->comboBox2->Name = L"comboBox2";
+					this->comboBox2->Size = System::Drawing::Size(170, 30);
+					this->comboBox2->TabIndex = 33;
+
+					// 
+					// Button3
+					//
+					this->Button3->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+						static_cast<System::Byte>(0)));
+					this->Button3->BackColor = System::Drawing::SystemColors::ButtonShadow;
+					this->Button3->ForeColor = System::Drawing::Color::White;
+					this->Button3->Location = System::Drawing::Point(280, 450);
+					this->Button3->Name = L"Button3";
+					this->Button3->Size = System::Drawing::Size(105, 36);
+					this->Button3->TabIndex = 33;
+					this->Button3->Text = L"Ok";
+					this->Button3->UseVisualStyleBackColor = false;
+					this->Button3->Click += gcnew System::EventHandler(this, &FormDesign::Button3_Click);
+					this->Controls->Add(this->comboBox2);
+					this->Controls->Add(this->label1);
+					this->Controls->Add(this->Button3);
+					this->Font = (gcnew System::Drawing::Font(L"Times New Roman", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+						static_cast<System::Byte>(0)));
+					this->ForeColor = System::Drawing::Color::Black;
+					this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
+					this->MaximizeBox = false;
+					this->MinimizeBox = false;
+					this->Name = L"FormDesign";
+					this->Text = L"Hangman";
+					this->Load += gcnew System::EventHandler(this, &FormDesign::FormDesign_Load);
+					this->ResumeLayout(false);
+					this->PerformLayout();
+				}
 		}
 
 #pragma endregion
@@ -1246,8 +1316,9 @@ namespace Hangman {
 
 		}
 		else {
-			//	this->Controls->Clear();
-			//levels();
+
+				this->Controls->Clear();
+			    levels();
 		}
 
 
@@ -1287,6 +1358,10 @@ namespace Hangman {
 		System::String^ Name;
 		std::string UserName;
 		std::string Display;
+		string Information;
+		char option[1024];
+		vector<GameData> details;
+		string value;
 		if (this->radioButton9->Checked == false && this->radioButton10->Checked == false)
 		{
 			MessageBox::Show("Choose the choice");
@@ -1301,6 +1376,27 @@ namespace Hangman {
 				cout << UserName;
 
 				UserRequest::send_requestcreategame(UserName);
+				Information = UserRequest::receive();
+				strcpy_s(option, Information.c_str());
+			
+				details = UserRequest::request_parse(Information);
+				value = UserRequest::receive_data(Information); 
+				
+				if (value == JOIN)
+				{
+
+					join_game(details);
+				}
+				else if (value == CATEGORYLIST)
+				{
+					creategame(details);
+				}
+				else if (value == GAMEINFO)
+				{
+					game_info(details);
+				}
+				return;
+
 				//data.send_requestcreategame(UserName);
 
 				//this->Controls->Clear();
@@ -1314,8 +1410,30 @@ namespace Hangman {
 				UserName = msclr::interop::marshal_as<std::string>(Name);
 				cout << UserName;
 
-				UserRequest::send_requestcreategame(UserName);
+				UserRequest::send_requestjoingame(UserName);
+				Information = UserRequest::receive();
+				strcpy_s(option, Information.c_str());
 
+				details = UserRequest::request_parse(Information);
+				value = UserRequest::receive_data(Information);
+
+				if (value == JOIN)
+				{
+
+					join_game(details);
+				}
+				else if (value == CATEGORYLIST)
+				{
+					creategame(details);
+				}
+				else if (value == GAMEINFO)
+				{
+					game_info(details);
+				}
+				return;
+
+
+			
 				//this->Controls->Clear();
 				//game_id();
 			}
@@ -1326,24 +1444,25 @@ namespace Hangman {
 	public: System::Void button6_Click(System::Object^  sender, System::EventArgs^  e) {
 		System::String^ Category;
 		std::string UserCategory;
-		std::string UserName;
-		System::String ^ Choice;
-		std::string UserChoice;
-		std::string Display;
 		System::String^ Level;
 		std::string UserLevel;
+		string Information;
+		char option[1024];
+		vector<GameData> details;
+		string value;
 
-		if (this->radioButton4->Checked == false && this->radioButton5->Checked == false && this->radioButton6->Checked == false)
-		{
-			MessageBox::Show("Choose the choice");
-		}
-		else
-		{
+
+//		if (this->radioButton4->Checked == false && this->radioButton5->Checked == false && this->radioButton6->Checked == false)
+	//	{
+		//	MessageBox::Show("Choose the choice");
+		//}
+	//	else
+		//{
 			if (this->radioButton4->Checked == true)
 			{
 				Level = radioButton4->Text;
 				UserLevel = msclr::interop::marshal_as<std::string>(Level);
-				char* Levels = (char*)Marshal::StringToHGlobalAnsi(Choice).ToPointer();
+				//char* Levels = (char*)Marshal::StringToHGlobalAnsi(Choice).ToPointer();
 				//this->Controls->Clear();
 				//game();
 			}
@@ -1366,32 +1485,86 @@ namespace Hangman {
 				//game();
 
 			}
-		}
+	//	}
 
 
 		Category = comboBox1->Text;
 		UserCategory = msclr::interop::marshal_as<std::string>(Category);
 		cout << UserCategory;
 		cout << UserLevel;
+		UserRequest::useroption(UserCategory, UserLevel);
+		Information = UserRequest::receive();
+		strcpy_s(option, Information.c_str());
+
+		details = UserRequest::request_parse(Information);
+		value = UserRequest::receive_data(Information);
+
+		if (value == JOIN)
+		{
+
+			join_game(details);
+		}
+		else if (value == CATEGORYLIST)
+		{
+			creategame(details);
+		}
+		else if (value == GAMEINFO)
+		{
+			game_info(details);
+		}
+		return;
+
+
 
 
 
 	}
 
+
 	private: System::Void textBox4_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
 		//if ((e->KeyChar>= '0') && (e->KeyChar <= '9'))
 		//{
-		if (textBox4->Text->Length < textBox4->MaxLength)
+		string Information;
+		char option[1024];
+		vector<GameData> details;
+		string value;
+
+		if (textBox4->Text->Length == textBox4->MaxLength)
 		{
-			System::String^ unmanaged = e->KeyChar.ToString();
-			string managed = msclr::interop::marshal_as<std::string>(unmanaged);
-			cout << managed;
-			String^ chars = textBox1->Text->Length.ToString();
-			string manage = msclr::interop::marshal_as<std::string>(chars);
-			cout << "size" << manage;
 
+
+
+			string UserGuess;
+			//	this->Controls->Clear();
+			//game(gameinfo);
+			String^ Letter = textBox4->Text;
+			UserGuess = msclr::interop::marshal_as<std::string>(Letter);
+			UserRequest::user_input(UserGuess);
+
+			Information = UserRequest::receive();
+			strcpy_s(option, Information.c_str());
+
+			details = UserRequest::request_parse(Information);
+			value = UserRequest::receive_data(Information);
+
+			if (value == JOIN)
+			{
+
+				join_game(details);
+			}
+			else if (value == CATEGORYLIST)
+			{
+				creategame(details);
+			}
+			else if (value == GAMEINFO)
+			{
+				game_info(details);
+			}
+
+			return;
 		}
-
+		
+		
 		if (textBox4->Text->Length >= textBox4->MaxLength)
 		{
 
@@ -1400,8 +1573,45 @@ namespace Hangman {
 		}
 
 	}
+			 void game_choice()
+			 {
+				 string Information;
+				 char option[1024];
+				 vector<GameData> details;
+				 string value;
+
+
+				 string UserGuess;
+				 //	this->Controls->Clear();
+				 //game(gameinfo);
+				 String^ Letter = textBox4->Text;
+				 UserGuess = msclr::interop::marshal_as<std::string>(Letter);
+				 //	UserRequest::user_input(UserGuess);
+
+				 Information = UserRequest::receive();
+				 strcpy_s(option, Information.c_str());
+
+				 details = UserRequest::request_parse(Information);
+				 value = UserRequest::receive_data(Information);
+
+				 if (value == GAMEINFO)
+				 {
+					 
+					 this->Controls->Clear();
+					 game(details);
+					 //game_info(details);
+				 }
+
+					 return;
+				 
+			 }
+
 	public: System::Void Button3_Click(System::Object^  sender, System::EventArgs^  e) {
 
+		string Information;
+		char option[1024];
+		vector<GameData> details;
+		string value;
 
 		System::String ^ Choice;
 		std::string UserChoice;
@@ -1417,6 +1627,30 @@ namespace Hangman {
 			UserChoice = msclr::interop::marshal_as<std::string>(Choice);
 			cout << UserChoice;
 
+			UserRequest::usergameid(UserChoice);
+
+			Information = UserRequest::receive();
+			strcpy_s(option, Information.c_str());
+
+			details = UserRequest::request_parse(Information);
+			value = UserRequest::receive_data(Information);
+
+			if (value == JOIN)
+			{
+
+				join_game(details);
+			}
+			else if (value == CATEGORYLIST)
+			{
+				creategame(details);
+			}
+			else if (value == GAMEINFO)
+			{
+				game_info(details);
+			}
+			return;
+
+
 
 			// Displays the MessageBox.
 			//join_game(gameid);
@@ -1430,12 +1664,7 @@ namespace Hangman {
 				 std::string UserChoice;
 				 this->Controls->Clear();
 				 game_id(GameId);
-				 Choice = comboBox2->Text;
-				 UserChoice = msclr::interop::marshal_as<std::string>(Choice);
-				 cout << UserChoice;
 				
-				 UserRequest::usergameid(UserChoice);
-
 			 }
 			 void creategame(vector<GameData> Categories)
 			 {
@@ -1443,10 +1672,6 @@ namespace Hangman {
 				 std::string UserCategory;
 				 this->Controls->Clear();
 				 categories(Categories);
-				 if (this->comboBox1->Text != "")
-				 {
-					 display_difficult(Categories);
-				 }
 				 Category = comboBox1->Text;
 				 UserCategory = msclr::interop::marshal_as<std::string>(Category);
 				 cout << UserCategory;
@@ -1457,7 +1682,7 @@ namespace Hangman {
 				 System::String^ Level;
 				 std::string UserLevel;
 				 this->Controls->Clear();
-				 levels(Difficult);
+				// levels(Difficult);
 
 
 				 if (this->radioButton4->Checked == true)
@@ -1489,14 +1714,14 @@ namespace Hangman {
 				 cout << UserCategory;
 				 UserRequest::useroption(UserCategory, UserLevel);
 			 }
-			 void game_info(vector<GameData> GameInfo)
+			 void game_info(vector<GameData> gameinfo)
 			 {
-				 string UserGuess;
-				 this->Controls->Clear();
-				 game(GameInfo);
-				 String^ Letter = textBox4->Text;
-				 UserGuess = msclr::interop::marshal_as<std::string>(Letter);
-				 UserRequest::user_input(UserGuess);
+				this->Controls->Clear();
+				 game(gameinfo);
+				// String^ Letter = textBox4->Text;
+//UserGuess = msclr::interop::marshal_as<std::string>(Letter);
+			//	 UserRequest::user_input(UserGuess);
+
 			 }
 
 	};

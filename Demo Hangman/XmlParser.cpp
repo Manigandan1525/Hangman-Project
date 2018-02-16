@@ -30,27 +30,27 @@ vector<GameData> XmlParser::parser(char* buffer)			//parse xml data
 
 vector<GameData> XmlParser::parse_joingame(xml_document<>* document)		//parse the joingame details
 {
-	int i=0;
+	int i = 0;
 	vector<GameData> data;
 	vector<string> gameid;
 	xml_node<>* node = document->first_node();
 	xml_node<> *node1 = node->first_node(JOIN);
 	xml_node<> *element = node1->first_node();
-		while (element != NULL)
-		{
-			gameid.push_back(element->value());
+	while (element != NULL)
+	{
+		gameid.push_back(element->value());
 
-			element = element->next_sibling();
-		}
-		i++;
-		detail.set_gameid(gameid);
-		data.push_back(detail);
-		return data;
+		element = element->next_sibling();
+	}
+	i++;
+	detail.set_gameid(gameid);
+	data.push_back(detail);
+	return data;
 }
 
 vector<GameData> XmlParser::parse_creategame(xml_document<>* document)			//parse the crate game details
 {
-	int i = 0,j=0;
+	int i = 0, j = 0;
 	vector<GameData> data;
 	vector<string> category;
 	xml_node<> *node = document->first_node();
@@ -70,7 +70,7 @@ vector<GameData> XmlParser::parse_creategame(xml_document<>* document)			//parse
 
 	while (element1 != NULL)
 	{
-	    difficulty.push_back(element1->value());
+		difficulty.push_back(element1->value());
 		element1 = element1->next_sibling();
 		j++;
 	}
