@@ -45,3 +45,17 @@
 #define  WIN "WIN"
 
 #define PLAYING "PLAYING"
+
+#define ENDGAME "EndGame"
+
+#define SERVER "172.29.124.236"
+
+#define PORT_NUMBER 138
+
+#define LEFTMARGIN 57
+
+#define TOPMARGIN 5
+
+#define RIGHTMARGIN 64
+
+#define BOTTOMMARGIN 9

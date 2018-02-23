@@ -73,10 +73,10 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;libws2_32.a;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libws2_32.a;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>NotSet</SubSystem>
       <EntryPointSymbol>main</EntryPointSymbol>
-      <AdditionalLibraryDirectories>C:\Users\Jayakuma-2\Documents;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\jayaraj-1\Desktop\User Interface\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Module Test|Win32'">
@@ -101,33 +101,30 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libws2_32.a;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\Jayakuma-2\Documents\User Interface\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\jayaraj-1\Desktop\User Interface\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="FormDesign.h" />
     <ClInclude Include="GameData.h" />
-    <ClInclude Include="Graphical_design.h" />
+    <ClInclude Include="GraphicalDesign.h" />
     <ClInclude Include="client.h" />
-    <ClInclude Include="FormDesign.h">
-      <FileType>CppForm</FileType>
+    <ClInclude Include="resource.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="UserDesign.h" />
-    <ClInclude Include="UserDesignInterface.h" />
-    <ClInclude Include="UserInterface.h" />
     <ClInclude Include="UserRequest.h" />
     <ClInclude Include="XmlParser.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="GameData.cpp" />
-    <ClCompile Include="Graphical_design.cpp" />
-    <ClCompile Include="client.cpp" />
     <ClCompile Include="FormDesign.cpp" />
+    <ClCompile Include="GameData.cpp" />
+    <ClCompile Include="GraphicalDesign.cpp" />
+    <ClCompile Include="client.cpp" />
     <ClCompile Include="UserDesign.cpp" />
-    <ClCompile Include="UserDesignInterface.cpp" />
     <ClCompile Include="UserRequest.cpp" />
     <ClCompile Include="XmlParser.cpp" />
   </ItemGroup>
@@ -139,18 +136,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FormDesign.resx">
-      <DependentUpon>FormDesign.h</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <ResourceCompile Include="User Interface.rc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="User Interface.rc" />
+    <Image Include="Images\stage1.PNG">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Image>
+    <Image Include="Images\stage2.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Image>
+    <Image Include="Images\stage3.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Image>
+    <Image Include="Images\stage4.PNG">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Image>
+    <Image Include="Images\stage5.PNG">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Image>
+    <Image Include="Images\stage6.PNG">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Image>
+    <Image Include="Images\stage7.PNG">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Image>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Images\stage1 .PNG" />
-    <Image Include="Images\stage2.png" />
-    <Image Include="Images\stage3.png" />
+    <EmbeddedResource Include="FormDesign.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

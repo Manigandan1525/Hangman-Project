@@ -1,5 +1,5 @@
 #include "UserDesign.h"
-string Name;
+//string Name;
 UserDesign::UserDesign()
 {
 	UserRequest::Instantiate();
@@ -10,19 +10,18 @@ UserDesign::~UserDesign()
 
 void UserDesign::get_username()
 {
-	hangman();
+	hangman_letter();
 	cout << "			HANGMAN GAME" << "\n" << endl;
 	cout << "\n Press 1 to exit game\n" << endl;
 	cout << "\n Enter your name : ";
 	cin.get();
 	getline(cin, Name);						// get user name to user
-	cout << Name.length() << endl;
 	while (1)
 	{
-		if (Name.length() > 50)
+		if (Name.length() >= 50)
 		{
-			cout << "Only 50 character allowed, please try again " << endl;
-			cout << "Enter your name:";
+			cout << "Only 50 character allowed, please try again " <<endl;
+			cout << "Enter your name:" ;
 			cin.get();
 			getline(cin, Name);
 		}
@@ -35,32 +34,27 @@ void UserDesign::get_username()
 		exit(0);
 	}
 	system("cls");
+	UserRequest::server_connection();
 }
+
 void UserDesign::game()
 {
-	ch.connection();
-	hangman();
-	int Option;
+	
+	system("cls");
+	hangman_letter();
+	int UserOption;
 	cout << "			HANGMAN GAME" << "\n" << endl;
-	cout << " 1. Play" << endl;
-	cout << " 2. Instruction" << endl;
-	cout << " 3. Exit" << endl;
-	cin >> Option;										//get option from user
+	cout << " 1. Play"<<endl;
+	cout << " 2. Instruction"<<endl;
+	cout << " 3. Exit"<<endl;
+	cin >> UserOption;										//get option from user
 	while (1)
 	{
-		if (cin.fail())
-		{
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-			cout << "Enter correct option: " << '\t';
-			cin >> Option;
-
-		}
-		else if (Option < 1 || Option>3)
+		UserOption = input_validation(UserOption);
+		if (UserOption < 1 || UserOption>3)
 		{
 			cout << "Enter correct option: " << '\t';
-			cin >> Option;
+			cin >> UserOption;
 		}
 		else
 		{
@@ -68,8 +62,8 @@ void UserDesign::game()
 		}
 	}
 	system("cls");
-	hangman();
-	switch (Option)
+	hangman_letter();
+	switch (UserOption)
 	{
 	case 1:
 		game_option();
@@ -78,29 +72,27 @@ void UserDesign::game()
 		int Value;
 		cout << "			HANGMAN GAME" << "\n" << endl;							//display istruction
 		cout << "  INSTRUCTION " << "\n" << endl;
-		cout << " a. The player can either create new game or join with existing game." << endl;
-		cout << " b. Total chances given to the players are 6." << endl;
-		cout << " c. The player can enter only one letter at a time." << endl;
-		cout << " d. for every wrong guesses the hangman image will be loaded " << endl;
-		cout << " e. If chances are over the player will lose the game" << endl;
-		cout << " f. For correct guesses the chances will not be reduced." << "\n\n\n" << endl;
+		cout << " a. The player can either create new game " << endl;
+		cout << "    or join with existing game." << endl;
+		cout << " b. Total chances given to the players" << endl;
+		cout << "    are 6." << endl;
+		cout << " c. The player can enter only one letter" << endl;
+		cout << "    at a time." << endl; 
+		cout << " d. for every wrong guesses the hangman " << endl;
+		cout << "    image will be loaded " << endl;
+		cout << " e. If chances are over the player will" << endl;
+		cout << "    lose the game" << endl;
+		cout << " f. For correct guesses the chances will"<<endl;
+		cout << "    not be reduced." << "\n\n\n" << endl;
 		cout << " 1.Back" << endl;
 		cin >> Value;
 		while (1)
 		{
-			if (cin.fail())
+			Value = input_validation(Value);
+			if (Value !=1)
 			{
-				cin.clear();
-				cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
 				cout << "Enter correct option: " << '\t';
 				cin >> Value;
-
-			}
-			else if (Value != 1)
-			{
-				cout << "Enter correct option: " << '\t';
-				cin >> Option;
 			}
 			else
 			{
@@ -117,10 +109,10 @@ void UserDesign::game()
 }
 
 
-void UserDesign::game_option()
+void UserDesign::game_option()							
 {
 	int UserOption;
-	hangman();
+	hangman_letter();
 	cout << "			HANGMAN GAME" << "\n\n" << endl;			//create or join game
 	cout << " select your option : " << "\n" << endl;
 	cout << " 1. Create " << "\n\n" << endl;
@@ -129,16 +121,8 @@ void UserDesign::game_option()
 	cin >> UserOption;
 	while (1)
 	{
-		if (cin.fail())
-		{
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-			cout << "Enter correct option: " << '\t';
-			cin >> UserOption;
-
-		}
-		else if (UserOption < 1 || UserOption>3)
+		UserOption = input_validation(UserOption);
+		if (UserOption < 1 || UserOption>3)
 		{
 			cout << "Enter correct option: " << '\t';
 			cin >> UserOption;
@@ -151,11 +135,11 @@ void UserDesign::game_option()
 	system("cls");
 	if (UserOption == 1)
 	{
-		UserRequest::send_requestcreategame(Name);			//send create request 
+		UserRequest::sendrequest_creategame(Name);			//send create request 
 	}
 	else if (UserOption == 2)
 	{
-		UserRequest::send_requestjoingame(Name);			//send join request
+		UserRequest::sendrequest_joingame(Name);			//send join request
 	}
 	else if (UserOption == 3)
 	{
@@ -163,11 +147,20 @@ void UserDesign::game_option()
 	}
 }
 
+void UserDesign::endgame(string EndGame)
+{
+	system("cls");
+	cout << " The Game is Already END..." << endl;
+	Sleep(2000);
+	system("cls");
+	game_option();
+
+}
 void UserDesign::join_game(vector<GameData> GameId)			//display join game details
 {
 	vector<string> GameDetails;
-	hangman();
-	int UserOption, size;
+	hangman_letter();
+	int UserOption,size;
 	size_t Index;
 	string id;
 	GameDetails = GameId[0].get_gameid();
@@ -175,6 +168,7 @@ void UserDesign::join_game(vector<GameData> GameId)			//display join game detail
 	{
 		cout << " No Game ID to Join" << endl;
 		Sleep(2000);
+		system("cls");
 		game_option();
 	}
 	else
@@ -183,23 +177,16 @@ void UserDesign::join_game(vector<GameData> GameId)			//display join game detail
 		cout << "     JOIN " << "\n" << endl;
 		cout << " GAME ID" << "\n\n" << endl;
 		size = GameDetails.size();
-		for (Index = 0; Index <size; Index++)
+		for (Index = 0; Index <size ; Index++)
 		{
 			cout << "\t " << Index + 1 << ". " << GameDetails[Index] << endl;
 		}
+		cout << "\n\n\n" << "Press \"0\" to Back"<<endl;
 		cin >> UserOption;
 		while (1)
 		{
-			if (cin.fail() || 0 > UserOption > GameDetails.size())
-			{
-				cin.clear();
-				cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-				cout << "Enter correct option: " << '\t';
-				cin >> UserOption;
-
-			}
-			else if (UserOption<1 || UserOption>Index)
+			UserOption = input_validation(UserOption);
+			if (UserOption<0 || UserOption>Index)
 			{
 				cout << "Enter correct option: " << '\t';
 				cin >> UserOption;
@@ -210,115 +197,121 @@ void UserDesign::join_game(vector<GameData> GameId)			//display join game detail
 			}
 		}
 		system("cls");
-		id = GameDetails[UserOption - 1];
-		UserRequest::usergameid(id);
+		if (UserOption == 0)
+		{
+			game_option();
+		}
+		else
+		{
+			id = GameDetails[UserOption - 1];
+			UserRequest::user_gameid(id);
+		}
 	}
 }
 
-void UserDesign::creategame(vector<GameData> Detail)
-{
-	int UserOption;
-	size_t Index;
-	vector<string> UserCategory, Difficulty;
-	string Category, Level;
-	hangman();
-	cout << "			HANGMAN GAME" << "\n\n" << endl;			//display category
-	cout << "     SELECT YOUR CATEGORY " << "\n" << endl;
-	for (Index = 0; Index < Detail.size(); Index++)
+void UserDesign::creategame(vector<GameData> Detail)			
 	{
-		UserCategory = Detail[0].get_gameoption();
-		for (Index = 0; Index < UserCategory.size(); Index++)
+		int UserOption;
+		size_t Index;
+		vector<string> UserCategory,Difficulty;
+		string Category,Level;
+		hangman_letter();
+		cout << "			HANGMAN GAME" << "\n\n" << endl;			//display category
+		cout << "     SELECT YOUR CATEGORY " << "\n" << endl;
+			UserCategory = Detail[0].get_gameoption();
+			for (Index = 0; Index < UserCategory.size(); Index++)
+			{
+				cout << "\t " << Index + 1 << ". " << UserCategory[Index] << endl;
+			}
+		cout << "\n\n\n" << "Press \"0\" to Back"<<endl;
+		cin >> UserOption;
+		while (1)
 		{
-			cout << "\t " << Index + 1 << ". " << UserCategory[Index] << endl;
+			UserOption = input_validation(UserOption);
+			if (UserOption<0 || UserOption>Index)
+			{
+				cout << "Enter correct option: " << '\t';
+				cin >> UserOption;
+			}
+			else
+			{
+				break;
+			}
 		}
-
-	}
-	cin >> UserOption;
-	while (1)
-	{
-		if (cin.fail())
+		system("cls");
+		if (UserOption == 0)
 		{
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-			cout << "Enter correct option: " << '\t';
-			cin >> UserOption;
-
-		}
-		else if (UserOption<1 || UserOption>Index)
-		{
-			cout << "Enter correct option: " << '\t';
-			cin >> UserOption;
+			game_option();
 		}
 		else
 		{
-			break;
-		}
-	}
-	system("cls");
-	Category = UserCategory[UserOption - 1];
-	hangman();
-	cout << "			HANGMAN GAME" << "\n\n" << endl;				//display difficulty
-	cout << "     SELECT YOUR DIFFICULTY " << "\n" << endl;
-	Difficulty = Detail[1].get_gameoption();
-	for (Index = 0; Index < Difficulty.size(); Index++)
-	{
-		cout << "\t " << Index + 1 << ". " << Difficulty[Index] << endl;
-	}
-	cin >> UserOption;
-	while (1)
-	{
-		if (cin.fail())
-		{
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			Category = UserCategory[UserOption - 1];
 
-			cout << "Enter correct option: " << '\t';
+			hangman_letter();
+			cout << "			HANGMAN GAME" << "\n\n" << endl;				//display difficulty
+			cout << "     SELECT YOUR DIFFICULTY " << "\n" << endl;
+			Difficulty = Detail[1].get_gameoption();
+			for (Index = 0; Index < Difficulty.size(); Index++)
+			{
+				cout << "\t " << Index + 1 << ". " << Difficulty[Index] << endl;
+			}
+			cout << "\n\n\n" << "Press \"0\" to Back" << endl;;
 			cin >> UserOption;
-
+			while (1)
+			{
+				UserOption = input_validation(UserOption);
+				if (UserOption<0 || UserOption>Index)
+				{
+					cout << "Enter correct option: " << '\t';
+					cin >> UserOption;
+				}
+				else
+				{
+					break;
+				}
+			}
+			system("cls");
+			if (UserOption == 0)
+			{
+				creategame(Detail);
+			}
+			else
+			{
+				Level = Difficulty[UserOption - 1];
+				UserRequest::user_option(Category, Level);
+			}
 		}
-		else if (UserOption<1 || UserOption>Index)
-		{
-			cout << "Enter correct option: " << '\t';
-			cin >> UserOption;
-		}
-		else
-		{
-			break;
-		}
-	}
-	system("cls");
-	Level = Difficulty[UserOption - 1];
-	UserRequest::useroption(Category, Level);
 }
 
 void UserDesign::game_info(vector<GameData> GameInfo)				//display game details
 {
 	int Turn;
-	string temp;
+	string word;
 	size_t Index;
-	string info = GameInfo[0].get_remainingguess();
+	string info = GameInfo[0].get_remaining_guess();
 	Turn = atoi(info.c_str());
 	system("cls");
-	design(Turn);
-	int check = stoi(GameInfo[0].get_remainingguess());
+	hangman_design(Turn);
+	int check = stoi(GameInfo[0].get_remaining_guess());
 	if (check != 0)
 	{
-		temp = GameInfo[0].get_words();
+		word = GameInfo[0].get_words();
 	}
 	cout << "			HANGMAN GAME" << "\n" << endl;
-	cout << "Game ID : " << GameInfo[0].get_usergameid() << endl;
+	cout << "Game ID : " << GameInfo[0].get_user_gameid() << endl;
+	cout << "\n";
+	cout << "Category : " << GameInfo[0].get_category() << endl;
 	cout << "\n\n";
 	cout << "Word" << "\t";
-	for (Index = 0; Index < temp.size(); Index++)
+	for (Index = 0; Index < word.size(); Index++)
 	{
-		cout << temp[Index] << " ";
+		cout << word[Index];
 	}
 	cout << endl;
 	cout << "\n";
-	cout << "Remaining Guess" << "\t\t" << GameInfo[0].get_remainingguess() << endl;
+	cout << "Remaining Guess" << "\t\t" << GameInfo[0].get_remaining_guess() << endl;
 	cout << "\n";
-	cout << "Wrong Guess" << "\t\t" << GameInfo[0].get_wrongguess() << endl;
+	cout << "Wrong Guess" << "\t\t" << GameInfo[0].get_wrong_guess() << endl;
 	if (GameInfo[0].get_result() == WIN)
 	{
 		Sleep(3000);
@@ -345,7 +338,7 @@ void UserDesign::chance()
 	string Letter;
 	cout << "Enter your guessing letter" << endl;
 
-	while (1)
+	while(1)
 	{
 		cin >> Letter;
 		if (Letter.length() == 1)
@@ -360,16 +353,43 @@ void UserDesign::chance()
 	}
 }
 
-void UserDesign::game_result(string name, string result)			//display game result 
+void UserDesign::game_result(string Name,string Result)			//display game result 
 {
-	int Option;
+	int UserOption;
 	cout << "			HANGMAN GAME" << "\n" << endl;
 	cout << "\n" << endl;
-	cout << "	\t\t   " << result << "\n" << endl;
-	cout << " Correct Word :" << name << "\n\n" << endl;
+	cout << "	\t\t   " <<Result<< "\n" << endl;
+	cout << " Correct Word :" << Name << "\n\n"<<endl;
 	cout << " 1. New game" << endl;
 	cout << " 2. Exit" << endl;
-	cin >> Option;
+	cin >> UserOption;
+	while (1)
+	{
+		UserOption = input_validation(UserOption);
+		if (UserOption<1 || UserOption>2)
+		{
+			cout << "Enter correct option: " << '\t';
+			cin >> UserOption;
+		}
+		else
+		{
+			break;
+		}
+	}
+	if (UserOption == 1)
+	{
+		system("cls");
+		game();
+	}
+	else if (UserOption == 2)
+	{
+		exit(0);
+	}
+
+}
+
+int UserDesign::input_validation(int UserOption)
+{
 	while (1)
 	{
 		if (cin.fail())
@@ -378,126 +398,140 @@ void UserDesign::game_result(string name, string result)			//display game result
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
 			cout << "Enter correct option: " << '\t';
-			cin >> Option;
-		}
-		else if (Option<1 || Option>2)
-		{
-			cout << "Enter correct option: " << '\t';
-			cin >> Option;
+			cin >> UserOption;
 		}
 		else
 		{
-			break;
+			return UserOption;
 		}
 	}
-	if (Option == 1)
-	{
-		system("cls");
-		game();
-	}
-	else if (Option == 2)
-	{
-		exit(0);
-	}
+}
+void UserDesign::hangman_letter()			//display hangman letter
+{
+	hangman_stand();
+	Design.box(LEFTMARGIN-13, TOPMARGIN-1, RIGHTMARGIN-19, BOTTOMMARGIN+1);				//letter H to draw in console window
+	Design.box(LEFTMARGIN-11, TOPMARGIN+3, RIGHTMARGIN-17, BOTTOMMARGIN-1);
+	Design.box(LEFTMARGIN-9 , TOPMARGIN+1, RIGHTMARGIN-15, BOTTOMMARGIN+1);
+
+
+	Design.box(LEFTMARGIN-6, TOPMARGIN+1, RIGHTMARGIN-12, BOTTOMMARGIN+1);				//letter A to draw in console window	
+	Design.box(LEFTMARGIN-5, TOPMARGIN+1, RIGHTMARGIN-8 , BOTTOMMARGIN-2);
+	Design.box(LEFTMARGIN-2, TOPMARGIN+1, RIGHTMARGIN-8 , BOTTOMMARGIN+1);
+
+
+	Design.box(LEFTMARGIN+2, TOPMARGIN+1, RIGHTMARGIN-1, BOTTOMMARGIN-3);				//letter N to draw in console window
+	Design.box(LEFTMARGIN+1, TOPMARGIN+1, RIGHTMARGIN-5, BOTTOMMARGIN+1);
+	Design.box(LEFTMARGIN+5, TOPMARGIN+1, RIGHTMARGIN-1, BOTTOMMARGIN+1);
+
+
+	Design.box(LEFTMARGIN+9 , TOPMARGIN+1, RIGHTMARGIN+6, BOTTOMMARGIN-3);				 //letter G to draw in console window
+	Design.box(LEFTMARGIN+8 , TOPMARGIN+1, RIGHTMARGIN+2, BOTTOMMARGIN+1);
+	Design.box(LEFTMARGIN+9 , TOPMARGIN+5, RIGHTMARGIN+6, BOTTOMMARGIN+1);
+	Design.box(LEFTMARGIN+8 , TOPMARGIN+7, RIGHTMARGIN+7, BOTTOMMARGIN+4);
+	Design.box(LEFTMARGIN+13, TOPMARGIN+1, RIGHTMARGIN+7, BOTTOMMARGIN+4);
+
+
+	Design.box(LEFTMARGIN-10, TOPMARGIN+9, RIGHTMARGIN-10, BOTTOMMARGIN+5);				 //letter M to draw in console window	
+	Design.box(LEFTMARGIN-11, TOPMARGIN+9, RIGHTMARGIN-17, BOTTOMMARGIN+9);
+	Design.box(LEFTMARGIN-7 , TOPMARGIN+9, RIGHTMARGIN-13, BOTTOMMARGIN+9);
+	Design.box(LEFTMARGIN-3 , TOPMARGIN+9, RIGHTMARGIN-9 , BOTTOMMARGIN+9);
+
+
+	Design.box(LEFTMARGIN  , TOPMARGIN+9, RIGHTMARGIN-6, BOTTOMMARGIN+9);				  //letter A to draw in console window	
+	Design.box(LEFTMARGIN+1, TOPMARGIN+9, RIGHTMARGIN-2, BOTTOMMARGIN+6);
+	Design.box(LEFTMARGIN+4, TOPMARGIN+9, RIGHTMARGIN-2, BOTTOMMARGIN+9);
+
+
+	Design.box(LEFTMARGIN+8 , TOPMARGIN+9, RIGHTMARGIN+4, BOTTOMMARGIN+5);			       //letter N to draw in console window		
+	Design.box(LEFTMARGIN+7 , TOPMARGIN+9, RIGHTMARGIN+1, BOTTOMMARGIN+9);
+	Design.box(LEFTMARGIN+11, TOPMARGIN+9, RIGHTMARGIN+5, BOTTOMMARGIN+9);
+
 
 }
 
-void UserDesign::hangman()			//display hangman letter
+void UserDesign::hangman_design(int ChanceLeft)				//display hangman
 {
-	gf.box(55, 2, 79, 3);
-	gf.box(75, 3, 76, 25);
-	gf.box(60, 3, 61, 5);
-	gf.box(44, 4, 45, 10);
-	gf.box(46, 8, 47, 8);
-	gf.box(48, 6, 49, 10);
-
-	gf.box(51, 6, 52, 10);
-	gf.box(52, 6, 56, 7);
-	gf.box(55, 6, 56, 10);
-
-
-	gf.box(59, 6, 63, 6);
-	gf.box(58, 6, 59, 10);
-	gf.box(62, 6, 63, 10);
-
-	gf.box(66, 6, 70, 6);
-	gf.box(65, 6, 66, 10);
-	gf.box(66, 10, 70, 10);
-	gf.box(65, 12, 71, 13);
-	gf.box(70, 6, 71, 13);
-
-	gf.box(47, 14, 54, 14);
-	gf.box(46, 14, 47, 18);
-	gf.box(50, 14, 51, 18);
-	gf.box(54, 14, 55, 18);
-
-	gf.box(57, 14, 58, 18);
-	gf.box(58, 14, 62, 15);
-	gf.box(61, 14, 62, 18);
-
-	gf.box(65, 14, 68, 14);
-	gf.box(64, 14, 65, 18);
-	gf.box(68, 14, 69, 18);
-
+	hangman_stand();
+	if (ChanceLeft == 5)
+	{
+		hangman_head();
+	}
+	else if (ChanceLeft == 4)
+	{
+		hangman_head();
+		hangman_body();
+	}
+	else if (ChanceLeft == 3)
+	{
+		hangman_head();
+		hangman_body();
+		hangman_hand(ChanceLeft);
+	}
+	else if (ChanceLeft == 2)
+	{
+		hangman_head();
+		hangman_body();
+		hangman_hand(ChanceLeft);
+	}
+	else if (ChanceLeft == 1)
+	{
+		hangman_head();
+		hangman_body();
+		hangman_hand(ChanceLeft);
+		hangman_leg(ChanceLeft);
+	}
+	else if (ChanceLeft == 0)
+	{
+		hangman_head();
+		hangman_body();
+		hangman_hand(ChanceLeft);
+		hangman_leg(ChanceLeft);
+	}
+}
+void UserDesign::hangman_stand()
+{
+	Design.box(LEFTMARGIN - 2, TOPMARGIN - 3, RIGHTMARGIN + 15, BOTTOMMARGIN - 6);		
+	Design.box(LEFTMARGIN + 18, TOPMARGIN - 2, RIGHTMARGIN + 12, BOTTOMMARGIN + 16);
+	Design.box(LEFTMARGIN + 3, TOPMARGIN - 2, RIGHTMARGIN - 3, BOTTOMMARGIN - 4);
 }
 
-void UserDesign::design(int chanceleft)				//display hangman
+void UserDesign::hangman_head()
 {
-	gf.box(55, 2, 79, 3);
-	gf.box(75, 3, 76, 25);
-	gf.box(60, 3, 61, 5);
-	if (chanceleft == 5)
+	Design.box(LEFTMARGIN  , TOPMARGIN  , RIGHTMARGIN  , BOTTOMMARGIN  );
+	Design.box(LEFTMARGIN+2, TOPMARGIN+1, RIGHTMARGIN-5, BOTTOMMARGIN-3);
+	Design.box(LEFTMARGIN+5, TOPMARGIN+1, RIGHTMARGIN-2, BOTTOMMARGIN-3);
+}
+
+void UserDesign::hangman_body()
+{
+	Design.box(LEFTMARGIN+3, TOPMARGIN+4, RIGHTMARGIN-3, BOTTOMMARGIN+8);
+}
+
+void UserDesign::hangman_hand(int ChanceLeft)
+{
+	if (ChanceLeft == 3)
 	{
-		gf.box(57, 5, 64, 9);
-		gf.box(59, 6, 59, 6);
-		gf.box(62, 6, 62, 6);
+		Design.box(LEFTMARGIN-6, TOPMARGIN+6, RIGHTMARGIN-5, BOTTOMMARGIN+3);
 	}
-	else if (chanceleft == 4)
+	else if (ChanceLeft == 2 || ChanceLeft == 1 || ChanceLeft == 0)
 	{
-		gf.box(57, 5, 64, 9);
-		gf.box(59, 6, 59, 6);
-		gf.box(62, 6, 62, 6);
-		gf.box(60, 9, 61, 17);
+		Design.box(LEFTMARGIN-6, TOPMARGIN + 6, RIGHTMARGIN - 5, BOTTOMMARGIN + 3);
+		Design.box(LEFTMARGIN+5, TOPMARGIN + 6, RIGHTMARGIN + 6, BOTTOMMARGIN + 3);
 	}
-	else if (chanceleft == 3)
+}
+
+void UserDesign::hangman_leg(int ChanceLeft)
+{
+	if (ChanceLeft == 1)
 	{
-		gf.box(57, 5, 64, 9);
-		gf.box(59, 6, 59, 6);
-		gf.box(62, 6, 62, 6);
-		gf.box(60, 9, 61, 17);
-		gf.box(51, 11, 59, 12);
+		Design.box(LEFTMARGIN-4, TOPMARGIN+11, RIGHTMARGIN-5 , BOTTOMMARGIN+8 );
+		Design.box(LEFTMARGIN-4, TOPMARGIN+11, RIGHTMARGIN-10, BOTTOMMARGIN+13);
 	}
-	else if (chanceleft == 2)
+	else if(ChanceLeft == 0)
 	{
-		gf.box(57, 5, 64, 9);
-		gf.box(59, 6, 59, 6);
-		gf.box(62, 6, 62, 6);
-		gf.box(60, 9, 61, 17);
-		gf.box(51, 11, 59, 12);
-		gf.box(62, 11, 70, 12);
-	}
-	else if (chanceleft == 1)
-	{
-		gf.box(57, 5, 64, 9);
-		gf.box(59, 6, 59, 6);
-		gf.box(62, 6, 62, 6);
-		gf.box(60, 9, 61, 17);
-		gf.box(51, 11, 59, 12);
-		gf.box(62, 11, 70, 12);
-		gf.box(53, 16, 59, 17);
-		gf.box(53, 16, 54, 22);
-	}
-	else if (chanceleft == 0)
-	{
-		gf.box(57, 5, 64, 9);
-		gf.box(59, 6, 59, 6);
-		gf.box(62, 6, 62, 6);
-		gf.box(60, 9, 61, 17);
-		gf.box(51, 11, 59, 12);
-		gf.box(62, 11, 70, 12);
-		gf.box(53, 16, 59, 17);
-		gf.box(53, 16, 54, 22);
-		gf.box(62, 16, 68, 17);
-		gf.box(67, 16, 68, 22);
+		Design.box(LEFTMARGIN- 4, TOPMARGIN + 11, RIGHTMARGIN - 5, BOTTOMMARGIN + 8);
+		Design.box(LEFTMARGIN- 4, TOPMARGIN + 11, RIGHTMARGIN -10, BOTTOMMARGIN +13);
+		Design.box(LEFTMARGIN+ 5, TOPMARGIN + 11, RIGHTMARGIN + 4, BOTTOMMARGIN + 8);
+		Design.box(LEFTMARGIN+10, TOPMARGIN + 11, RIGHTMARGIN + 4, BOTTOMMARGIN +13);
 	}
 }

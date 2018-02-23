@@ -1,31 +1,29 @@
 #pragma once
 #include "UserRequest.h"
-
 string UserName;
-static UserRequest *userReq;
+static UserRequest *UserReq;
 UserRequest::UserRequest()
 {
-
 }
 
 UserRequest::~UserRequest()
 {
-	if (userReq) {
-		delete userReq;
+	if (UserReq) {
+		delete UserReq;
 	}
-	userReq = NULL;
+	UserReq = NULL;
 }
 
 void UserRequest::Instantiate()
 {
-	if (userReq == NULL) {
-		userReq = new UserRequest;
+	if (UserReq == NULL) {
+		UserReq = new UserRequest;
 	}
 
 }
 bool UserRequest::Instance()
  {
-	if (userReq == NULL) {
+	 if (UserReq == NULL) {
 		return false;
 	}
 	return true;
@@ -35,7 +33,7 @@ string UserRequest::receive()
 {
 	string information;
 	if (Instance()) {
-		information=userReq->Request.receive_details();
+		information = UserReq->Request.receive_details();
 	}
 	return information;
 }
@@ -46,8 +44,8 @@ vector<GameData> UserRequest::request_parse(string data)
 	vector<GameData> details;
 	char new_data[1024];
 	if (Instance()) {
-		strcpy(new_data, data.c_str());
-		details=userReq->parse.parser(new_data);
+		strcpy_s(new_data, data.c_str());
+		details = UserReq->parse.parser(new_data);
 	}
 	return details;
 }
@@ -57,65 +55,61 @@ string UserRequest::receive_data(string data)
 	string value;
 	char option[1024];
 	if (Instance()) {
-		strcpy(option, data.c_str());
-		value=userReq->parse.receive_data(option);
+		strcpy_s(option, data.c_str());
+		value = UserReq->parse.receive_data(option);
 	}
 	return value;
 }
 
+
 void UserRequest::server_connection()
 {
 	if (Instance()) {
-		userReq->Request.connection();
+		UserReq->Request.connection();
 	}
-
 }
-void UserRequest::send_requestcreategame(string Name)
+
+void UserRequest::sendrequest_creategame(string Name)		//send create game request
 {
 	if (Instance()) {
 		UserName = Name;
-		string CreateGame = "<"HANGMAN"><"CREATE">User wants to create game</"CREATE"></"HANGMAN">";
-		userReq->Request.send_request(CreateGame);
+		string CreateGame = "<"HANGMAN"><"CREATE">User wants to create game</"CREATE"></"HANGMAN">";		
+		UserReq->Request.send_request(CreateGame);
 	}
 
 }
 
-void UserRequest::send_requestjoingame(string Name)
+void UserRequest::sendrequest_joingame(string Name)			//send join game request 
 {
 	if (Instance()) {
 		UserName = Name;
 		string JoinGame = "<"HANGMAN"><"JOIN">User wants to join game</"JOIN"></"HANGMAN">";
-		userReq->Request.send_request(JoinGame);
+		UserReq->Request.send_request(JoinGame);
 	}
 
 }
 
-void UserRequest::usergameid(string GameId)
+void UserRequest::user_gameid(string GameId)					//send  gameid request 
 {
 	if (Instance()) {
 		string JoinGame = "<"HANGMAN"><"JOINGAME"><"GAMEID">" + GameId + "</"GAMEID"></"JOINGAME"><"USERNAME">" + UserName + "</"USERNAME"></"HANGMAN">";
-		userReq->Request.send_request(JoinGame);
+		UserReq->Request.send_request(JoinGame);
 	}
 }
 
-void UserRequest::useroption(string Category, string Difficulty)
+void UserRequest::user_option(string Category, string Difficulty)	//send category and difficulty to server
 {
 	if (Instance()) {
 		string CreateGame = "<"HANGMAN"><"CREATEGAME"><"CATEGORY">" + Category + "</"CATEGORY"><"LEVEL">" + Difficulty + "</"LEVEL"></"CREATEGAME"><"USERNAME">" + UserName + "</"USERNAME"></"HANGMAN">";
-		userReq->Request.send_request(CreateGame);
+		UserReq->Request.send_request(CreateGame);
 	}
 }
 
-void UserRequest::player_response(string Decision)
-{
-	string Response = "<"HANGMAN"><"RESPONSE">" + Decision + "</"RESPONSE"></"HANGMAN">";
 
-}
-
-void UserRequest::user_input(string Letter)
+void UserRequest::user_input(string Letter)				//send user letter to server
 {
 	if (Instance()) {
 		string UserInput = "<"HANGMAN"><"LETTER">" + Letter + "</"LETTER"></"HANGMAN">";
-		userReq->Request.send_request(UserInput);
+		UserReq->Request.send_request(UserInput);
 	}
 }

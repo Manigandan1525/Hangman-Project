@@ -1,6 +1,6 @@
 #pragma once
 #define NOMINMAX
-#include "Graphical_design.h"
+#include "GraphicalDesign.h"
 #include"GameData.h"
 #include"UserRequest.h"
 #include<iostream>
@@ -11,21 +11,27 @@ using namespace std;
 class UserDesign
 {
 private:
-	GameData detail;
-	Graphical_design gf;
-	client ch;
+	GraphicalDesign Design;
+	string Name;
 	void game_option();
 	void chance();
-	void hangman();
-	void design(int);
+	int input_validation(int);
+	void hangman_letter();
+	void hangman_design(int);
+	void hangman_stand();
+	void hangman_head();
+	void hangman_body();
+	void hangman_hand(int);
+	void hangman_leg(int);
 public:
 	string UserDetails;
 	void get_username();
 	void game();
-	void game_result(string, string);
+	void game_result(string,string);
 	void join_game(vector<GameData>);
 	void creategame(vector<GameData>);
 	void game_info(vector<GameData>);
+	void endgame(string);
 	UserDesign();
 	~UserDesign();
 };

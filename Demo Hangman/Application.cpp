@@ -1,6 +1,6 @@
 #pragma once
-#define NOMINMAX
-#include "XmlParser.h"
+#define NOMINMAX			
+#include "XmlParser.h"			
 #include "client.h"
 #include "FormDesign.h"
 #include <iostream> 
@@ -10,32 +10,35 @@ using namespace std;
 [STAThreadAttribute]
 int main()
 {
-	FormDesign form;
-	UserDesign design;
-	client client;
-	XmlParser parse;
-	vector<GameData> details;
-	string Information; 
-	char option[1024];
-	char new_data[1024];
-	string value;
-	int choice;
+	system("cls");
+	FormDesign Form;
+	UserDesign Design;
+	client Client;
+	XmlParser Parse;
+	vector<GameData> Details;
+	string ReceiveData; 
+	char GameData[1024];
+	char Buffer[1024];
+	string CheckData;
+	int Choice;
 	cout << "Enter 1 to windows\n";
 	cout << "Enter 2 to console\n";
-	cin >> choice;
+	cout << "Enter 3 to EXIT"<<endl;
+	cin >> Choice;
 	while (1)
 	{
 		if (cin.fail())
 		{
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
 			cout << "Enter correct option: " << '\t';
-			cin >> choice;
+			cin >> Choice;
 		}
-		else if (choice<1 || choice>2)
+		else if (Choice<1 || Choice>3)
 		{
 			cout << "Enter correct option: " << '\t';
-			cin >> choice;
+			cin >> Choice;
 		}
 		else
 		{
@@ -43,42 +46,50 @@ int main()
 		}
 	}
 	system("cls");
-	if (choice == 1)				//choose windows application
+	if (Choice == 1)				//choose windows application
 	{
 		HWND hWnd = GetConsoleWindow();
 		if (hWnd != 0) {
 			ShowWindow(hWnd, SW_HIDE);
 		}
 		
-		form.InitializeComponent();
-		form.ShowDialog();
+		Application::Run(gcnew FormDesign);
+		exit(0);
 	}
-	else					  //choose console application
+	else if (Choice == 2)                                   //choose console applicati0n 
 	{
-		design.get_username();
-		design.game();
+		system("cls");
+		Design.get_username();
+		Design.game();
 		while (1)
 		{
-			Information = client.receive_details();
-			if (!Information.empty())
+			ReceiveData = Client.receive_details();
+			if (!ReceiveData.empty())
 			{
-				strcpy_s(option, Information.c_str());
-				strcpy(new_data, Information.c_str());
-				value = parse.receive_data(option);
-				details = parse.parser(new_data);
-				if (value == JOIN)
+				strcpy_s(GameData, ReceiveData.c_str());
+				strcpy_s(Buffer, ReceiveData.c_str());
+				CheckData = Parse.receive_data(GameData);
+				if (CheckData != ENDGAME)
 				{
+					Details = Parse.parser(Buffer);
+				}
+				if (CheckData == JOIN)
+				{
+					Design.join_game(Details);
+				}
+				else if (CheckData == CATEGORYLIST)
+				{
+					Design.creategame(Details);
+				}
+				else if (CheckData == GAMEINFO)
+				{
+					Design.game_info(Details);
+				}
+				else if (CheckData == ENDGAME)
+				{
+					Design.endgame(CheckData);
+				}
 
-					design.join_game(details);
-				}
-				else if (value == CATEGORYLIST)
-				{
-					design.creategame(details);
-				}
-				else if (value == GAMEINFO)
-				{
-					design.game_info(details);
-				}
 			}
 			else
 			{
@@ -87,8 +98,11 @@ int main()
 			}
 		}
 	}
+	else if (Choice == 3)
+	{
+		exit(0);
+	}
 	cin.get();
 	cin.ignore(1000, '\n');
 	return EXIT_SUCCESS;
 }
-

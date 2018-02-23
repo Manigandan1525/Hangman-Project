@@ -18,9 +18,6 @@
     <ClInclude Include="UserDesign.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Graphical_design.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="XmlParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -30,13 +27,7 @@
     <ClInclude Include="resource.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="UserInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UserRequest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UserDesignInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="client.h">
@@ -45,15 +36,15 @@
     <ClInclude Include="resource1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GraphicalDesign.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="FormDesign.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UserDesign.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphical_design.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
@@ -68,14 +59,14 @@
     <ClCompile Include="UserRequest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UserDesignInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GraphicalDesign.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="FormDesign.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -89,14 +80,29 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Images\stage1 .PNG">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="Images\stage2.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Images\stage3.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Images\stage4.PNG">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\stage5.PNG">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\stage6.PNG">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\stage7.PNG">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\stage1.PNG">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

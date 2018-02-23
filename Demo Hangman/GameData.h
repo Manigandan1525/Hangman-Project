@@ -14,15 +14,16 @@ private:
 	string Chance;
 	vector<string> CategoryList;
 	vector<string> Level;
+	string Category;
 public:
-	void set_usergameid(string);
-	string get_usergameid();
+	void set_user_gameid(string);
+	string get_user_gameid();
 	void set_words(string);
 	string get_words();
-	void set_remainingguess(string);
-	string get_remainingguess();
-	void set_wrongguess(string);
-	string get_wrongguess();
+	void set_remaining_guess(string);
+	string get_remaining_guess();
+	void set_wrong_guess(string);
+	string get_wrong_guess();
 	void set_result(string);
 	string get_result();
 	void set_chance(string);
@@ -31,6 +32,8 @@ public:
 	vector<string> get_gameoption();
 	void set_gameid(vector<string> id);
 	vector<string> get_gameid();
-	GameData();
+	void set_category(string);
+	string get_category();
+	//GameData();
 };
 

@@ -1,16 +1,13 @@
 #include "GameData.h"
 
 
-GameData::GameData()
-{
-}
 
-void GameData::set_usergameid(string Id)
+void GameData::set_user_gameid(string Id)
 {
 	this->GameId = Id;						//set user choose game id
 }
 
-string GameData::get_usergameid()
+string GameData::get_user_gameid()
 {
 	return this->GameId;					//get user choose game id
 }
@@ -24,22 +21,22 @@ string GameData::get_words()
 	return this->GameWord;					//get game word
 }
 
-void GameData::set_remainingguess(string RemainingGuess)
+void GameData::set_remaining_guess(string RemainingGuess)
 {
 	this->RemainingGuess = RemainingGuess;			//set remaining guess letter
 }
 
-string GameData::get_remainingguess()
+string GameData::get_remaining_guess()
 {
 	return this->RemainingGuess;					//get remaining guess letter
 }
 
-void GameData::set_wrongguess(string WrongGuess)
+void GameData::set_wrong_guess(string WrongGuess)
 {
 	this->WrongGuess = WrongGuess;					//set user wrong guess
 }
 
-string GameData::get_wrongguess()
+string GameData::get_wrong_guess()
 {
 	return this->WrongGuess;						//get user wrong guess
 }
@@ -83,4 +80,14 @@ void GameData::set_gameid(vector<string> Id)
 vector<string> GameData::get_gameid()
 {
 	return this->TotalGameId;				//get id
+}
+
+void GameData::set_category(string Category)
+{
+	this->Category = Category;
+}
+
+string GameData::get_category()			//get user category
+{
+	return this->Category;
 }

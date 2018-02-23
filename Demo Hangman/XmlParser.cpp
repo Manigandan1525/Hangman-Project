@@ -1,126 +1,120 @@
 #include "XmlParser.h"
 
-XmlParser::XmlParser()
+vector<GameData> XmlParser::parser(char* Buffer)			//parse xml data
 {
-}
-
-vector<GameData> XmlParser::parser(char* buffer)			//parse xml data
-{
-	string name;
-	xml_document<> document;
-	document.parse<0>(&buffer[0]);
-	xml_node<> *node = document.first_node();
+	string Name;
+	xml_document<> Document;
+	Document.parse<0>(&Buffer[0]);
+	xml_node<> *node = Document.first_node();
 	xml_node<> *node1 = node->first_node();
-	name = node1->name();
-
-	if (name == JOIN)
+	Name = node1->name();
+	if (Name == JOIN)
 	{
-		return parse_joingame(&document);
+		return parse_joingame(&Document);
 	}
-	else if (name == CATEGORYLIST)
+	else if (Name == CATEGORYLIST)
 	{
-		return parse_creategame(&document);
+		return parse_creategame(&Document);
 	}
-	else if (name == GAMEINFO)
+	else if (Name == GAMEINFO)
 	{
-		return parse_gameinfo(&document);
+		return parse_gameinfo(&Document);
 	}
 
 }
 
-vector<GameData> XmlParser::parse_joingame(xml_document<>* document)		//parse the joingame details
+vector<GameData> XmlParser::parse_joingame(xml_document<>* Document)		//parse the joingame details
 {
-	int i = 0;
-	vector<GameData> data;
-	vector<string> gameid;
-	xml_node<>* node = document->first_node();
+	vector<GameData> Data;
+	vector<string> GameId;
+	xml_node<>* node = Document->first_node();
 	xml_node<> *node1 = node->first_node(JOIN);
 	xml_node<> *element = node1->first_node();
-	while (element != NULL)
-	{
-		gameid.push_back(element->value());
+		while (element != NULL)
+		{
+			GameId.push_back(element->value());
+			element = element->next_sibling();
+		}
 
-		element = element->next_sibling();
-	}
-	i++;
-	detail.set_gameid(gameid);
-	data.push_back(detail);
-	return data;
+		Detail.set_gameid(GameId);
+		Data.push_back(Detail);
+		return Data;
 }
 
-vector<GameData> XmlParser::parse_creategame(xml_document<>* document)			//parse the crate game details
+vector<GameData> XmlParser::parse_creategame(xml_document<>* Document)			//parse the crate game details
 {
-	int i = 0, j = 0;
-	vector<GameData> data;
-	vector<string> category;
-	xml_node<> *node = document->first_node();
+	vector<GameData> Data;
+	vector<string> Category;
+	vector<string> Difficulty;
+	xml_node<> *node = Document->first_node();
 	xml_node<> *node1 = node->first_node(CATEGORYLIST);
 	xml_node<>*element = node1->first_node();
 	while (element != NULL)
 	{
-		category.push_back(element->value());
+		Category.push_back(element->value());
 		element = element->next_sibling();
-		i++;
 	}
-	detail.set_gameoption(category);
-	data.push_back(detail);
-	vector<string> difficulty;
+	Detail.set_gameoption(Category);
+	Data.push_back(Detail);
+
 	xml_node<> *node2 = node->first_node(DIFFICULTYLEVEL);
 	xml_node<>*element1 = node2->first_node();
-
 	while (element1 != NULL)
 	{
-		difficulty.push_back(element1->value());
+		Difficulty.push_back(element1->value());
 		element1 = element1->next_sibling();
-		j++;
 	}
-	detail.set_gameoption(difficulty);
-	data.push_back(detail);
-	return data;
+	Detail.set_gameoption(Difficulty);
+	Data.push_back(Detail);
+	return Data;
 }
 
-vector<GameData> XmlParser::parse_gameinfo(xml_document<>* document)			//parse the gameinfo details
+vector<GameData> XmlParser::parse_gameinfo(xml_document<>* Document)			//parse the gameinfo details
 {
-	vector<GameData> data;
-	vector<string> gameinfo;
-	xml_node<> *node = document->first_node();
+	vector<GameData> Data;
+	xml_node<> *node = Document->first_node();
 	xml_node<> *node1 = node->first_node(GAMEINFO);
 	xml_node<> *element = node1->first_node(GAMEID);
-	string value = element->value();
-	detail.set_usergameid(value);
+	Detail.set_user_gameid(element->value());
 	element = node1->first_node(WORDS);
-	detail.set_words(element->value());
+	Detail.set_words(element->value());
 	element = node1->first_node(REMAININGGUESS);
-	detail.set_remainingguess(element->value());
+	Detail.set_remaining_guess(element->value());
 	element = node1->first_node(WRONGGUESS);
-	detail.set_wrongguess(element->value());
+	Detail.set_wrong_guess(element->value());
 	element = node1->first_node(RESULT);
-	detail.set_result(element->value());
+	Detail.set_result(element->value());
 	element = node1->first_node(CHANCE);
-	detail.set_chance(element->value());
-	data.push_back(detail);
-	return data;
+	Detail.set_chance(element->value());
+	element = node1->first_node(CATEGORY);
+	Detail.set_category(element->value());
+	Data.push_back(Detail);
+	return Data;
 }
 
-string XmlParser::receive_data(char* buffer)				//parse receive data
+string XmlParser::receive_data(char* Buffer)				//parse receive data
 {
-	string name;
-	xml_document<> doc;
-	doc.parse<0>(&buffer[0]);
-	xml_node<> *node = doc.first_node(HANGMAN);
+	string Name;
+	xml_document<> Document;
+	Document.parse<0>(&Buffer[0]);
+	xml_node<> *node = Document.first_node(HANGMAN);
 	xml_node<> *node1 = node->first_node();
-	name = node1->name();
-	if (name == JOIN)
+	Name = node1->name();
+	if (Name == JOIN)
 	{
 		return JOIN;
 	}
-	else if (name == CATEGORYLIST)
+	else if (Name == CATEGORYLIST)
 	{
 		return CATEGORYLIST;
 	}
-	else if (name == GAMEINFO)
+	else if (Name == GAMEINFO)
 	{
 		return GAMEINFO;
+	}
+	else if (Name == ENDGAME)
+	{
+		return ENDGAME;
 	}
 
 }
